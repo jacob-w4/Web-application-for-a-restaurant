@@ -3,7 +3,7 @@ from flask import Flask, request, redirect
 app = Flask(__name__)
 
 remote_url = "http://20.215.201.137/"
-local_url = "http://localhost:63342/C:/Users/Jakub/VscProject/lokal_kebab/WWW/"
+local_url = "http://127.0.0.1:5200/WWW/"
 
 
 @app.route("/login", methods=["POST"])

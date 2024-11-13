@@ -1,5 +1,5 @@
 body {
-    background-image: url("C:/Users/Jakub/VscProject/lokal_kebab/WWW/login/res/kebab.jpg");
+    background-image: url("/WWW/login/res/kebab.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
@@ -7,7 +7,7 @@ body {
 }
 
 button {
-    background-image: url("C:/Users/Jakub/VscProject/lokal_kebab/WWW/login/res/pngegg.png");
+    background-image: url("/WWW/login/res/pngegg.png");
     appearance: none;
     height: 75px;
     width: 75px;

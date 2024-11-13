@@ -1,0 +1,54 @@
+body {
+    background-image: url("C:/Users/Jakub/VscProject/lokal_kebab/WWW/login/res/kebab.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+button {
+    background-image: url("C:/Users/Jakub/VscProject/lokal_kebab/WWW/login/res/pngegg.png");
+    appearance: none;
+    height: 75px;
+    width: 75px;
+    background-size: cover;
+}
+
+label {
+    color: white;
+    font-size: 21px;
+}
+
+input {
+    font-size: 18px;
+}
+
+#submit_button {
+    font-size: 16px;
+}
+
+div {
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 400px;
+    height: 450px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border-color: white;
+    border-style: inset;
+
+}
+h1 {
+    color: white;
+    font-size: 40px;
+}
+
+form {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    margin: 50px 100px 100px 100px;
+}

@@ -12,6 +12,8 @@ button {
     height: 75px;
     width: 75px;
     background-size: cover;
+    background-color: transparent;
+    border: none;
 }
 
 label {
@@ -24,31 +26,56 @@ input {
 }
 
 #submit_button {
+    text-align: center;
+    font-weight: bold;
     font-size: 16px;
+    background-color: #e68200;
+    color: white;
+}
+
+
+h1 {
+    color: white;
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 50px;
+    margin-top: 40px;
+}
+
+form {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
 }
 
 div {
-    background-color: rgba(0, 0, 0, 0.6);
-    width: 400px;
-    height: 450px;
-
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
-    border-color: white;
-    border-style: inset;
-
+    
 }
-h1 {
+
+.container {
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 400px;
+    height: 450px;
+    border-style: outset;
+
+    display: flex;
+    justify-content: center;
+}
+
+input {
+    background-color: #dcdcdc;
+    border-style: hidden;
+    border-radius: 5px;
+    margin: 0px 20px 20px 20px;
+    padding: 12px 10px;
+}
+
+a {
+    margin-top: 30px;
+    text-align: center;
     color: white;
-    font-size: 40px;
-}
-
-form {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    margin: 50px 100px 100px 100px;
 }

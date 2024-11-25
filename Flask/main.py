@@ -12,7 +12,7 @@ def login():
     username = request.form['username']
     password = request.form['password']
 
-    # Logowanie i przekierowanie do home
+    # Logowanie i przekierowanie do home (strona glowna)
     if username != "" and password != "":
         user = (username, password)
 

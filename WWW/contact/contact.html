@@ -1,28 +1,59 @@
-<div class="container">
-    <div style="text-align:center">
-      <h2>Kontakt</h2>
-      <p>Swing by for a cup of coffee, or leave us a message:</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="topnav">
+        <div class="topnav-left">
+            <img src="/WWW/home/res/KEBAB.png" alt="Kebab Logo" id="kebab-img">
+            <a href="/WWW/home/home.html" id="logo">Kabge Kebab</a>
+        </div>
+        <div class="topnav-centered">
+            <a href="/WWW/about-us/about.html" class="top-element">O nas</a>
+            <a href="/WWW/menu/menu.html" class="top-element">Menu</a>
+            <a href="/WWW/contact/contact.html" class="top-element">Kontakt</a>
+        </div>
+        <div class="topnav-right">
+            <a href="/WWW/login/login.html" class="top-element">Zaloguj się</a>
+            <a href="/WWW/order/order.html" class="top-element">Zamówienie</a>
+        </div>
     </div>
-    <div class="row">
-      <div class="column">
-        <img src="/w3images/map.jpg" style="width:100%">
-      </div>
-      <div class="column">
-        <form action="/action_page.php">
-          <label for="fname">First Name</label>
-          <input type="text" id="fname" name="firstname" placeholder="Your name..">
-          <label for="lname">Last Name</label>
-          <input type="text" id="lname" name="lastname" placeholder="Your last name..">
-          <label for="country">Country</label>
-          <select id="country" name="country">
-            <option value="australia">Australia</option>
-            <option value="canada">Canada</option>
-            <option value="usa">USA</option>
-          </select>
-          <label for="subject">Subject</label>
-          <textarea id="subject" name="subject" placeholder="Write something.." style="height:170px"></textarea>
-          <input type="submit" value="Submit">
-        </form>
-      </div>
+
+    <div class="contact-container">
+        <h1>Kontakt</h1>
+
+        <!-- Informacje o lokalu -->
+        <div class="contact-info">
+            <h2>Nasze dane</h2>
+            <p><strong>Adres:</strong> Ul. Długosza 45B, 48-303 Nysa</p>
+            <p><strong>Telefon:</strong> +48 888 973 424</p>
+            <p><strong>E-mail:</strong> kontakt@kabgekebab.pl</p>
+            <p><strong>Godziny otwarcia:</strong></p>
+            <ul>
+                <li>Poniedziałek - Piątek: 10:00 - 22:00</li>
+                <li>Sobota - Niedziela: 12:00 - 23:00</li>
+            </ul>
+        </div>
+
+        <!-- Formularz kontaktowy -->
+        <div class="contact-form">
+            <h2>Formularz kontaktowy</h2>
+            <form>
+                <label for="name">Imię i nazwisko:</label>
+                <input type="text" id="name" name="name" placeholder="Wpisz swoje imię i nazwisko" required>
+
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" placeholder="Wpisz swój e-mail" required>
+
+                <label for="message">Wiadomość:</label>
+                <textarea id="message" name="message" placeholder="Wpisz swoją wiadomość" rows="5" required></textarea>
+
+                <button type="submit">Wyślij</button>
+            </form>
+        </div>
     </div>
-  </div>
+</body>
+</html>

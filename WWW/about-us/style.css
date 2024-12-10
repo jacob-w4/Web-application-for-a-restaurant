@@ -1,0 +1,109 @@
+.topnav {
+  background-color: orange;
+  overflow: hidden;
+  display: flex;
+  border-bottom-style: solid;
+  border-bottom-color: black;
+  height: 60px;
+}
+
+body {
+ margin: 0 auto;
+ background-image: url("/WWW/about-us/res/kebab-lokal.jpg");
+ background-repeat: no-repeat;
+ background-position: center;
+ background-attachment: fixed;
+ background-size: cover;
+}
+
+.topnav a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 18px 16px;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.topnav a:hover {
+  background-color: rgb(224, 217, 217);
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+#logo {
+  font-family: 'Brush Script MT', cursive;
+  padding: 14px 16px;
+  font-size: 26px;
+}
+
+.topnav-left {
+  position: absolute;
+  left: 8%;
+}
+
+.topnav-right {
+  float: right;
+  position: absolute;
+  right: 8%;
+}
+
+.topnav-centered {
+  position: absolute;
+  left: 18%;
+}
+
+#kebab-img {
+  height: 60px;
+  float: left;
+}
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  
+  
+  display: flex;
+  flex-direction: column;
+
+  background-color: rgba(218, 218, 218, 0.9);
+  
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 40px 50px;
+
+  width: 80%; /* Szerokość kontenera ustawiona na 90% szerokości rodzica */
+  max-width: 650px; /* Maksymalna szerokość, aby nie przekraczała określonej wartości */
+  height: 75%;
+}
+
+.header {
+  font-size: 48px;
+  margin-bottom: 0;
+  font-family: 'Brush Script MT', cursive;
+}
+
+.header1 {
+  font-size: 48px;
+  margin-bottom: 0;
+  margin-top: 20px;
+  font-family: 'Brush Script MT', cursive;
+}
+
+p {
+  text-align: justify;
+  font-size: 18px;
+  line-height: 1.5;
+  margin-top: 0;
+  font-family: Georgia, serif;
+}
+
+hr {
+  margin-top: 10%;
+}

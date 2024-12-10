@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect
+from flask import Flask, jsonify, request, redirect
 
 app = Flask(__name__)
 
@@ -23,6 +23,43 @@ def login():
         print("Error: Enter username and password")
         return redirect(location=f"{local_url}login/login.html")
         # return redirect(location=remote_url)
+
+@app.route("/profile", methods=["GET"])
+def send_data_to_profile():
+    return jsonify({
+     "username" : "jakub",
+     "email" : "xyz@gmail.com",
+     "phone" : "XXX-XXX-XXX",
+     "points" : "54",
+     "city" : "Wrocław",
+     "street" : "ul. Kwiatowa 999",
+     "apartment_num" : "16"
+    })
+
+@app.route("/edit_profile", methods=["PUT"])
+def edit_user_data():
+    return "Dane pomyślnie zaktualizowane"
+
+@app.route("/order", methods=["POST"])
+def make_order():
+    return jsonify({"status" : "Zamówienie zostało złożone"})
+
+@app.route("/admin_orders", methods=["GET","PUT","DELETE"])
+def orders():
+    return jsonify({"status" : "Success"})
+
+@app.route("/admin_change_menu", methods=["POST", "DELETE", "PUT"])
+def change_menu():
+    return jsonify({"status" : "Success"})
+
+@app.route("/menu", methods=["GET"])
+def get_menu():
+    return jsonify({
+     "name" : "kebab w bułce",
+     "price" : "19.99",
+     "size" : "M",
+     "description" : "Kebab w bułce – aromatyczne mięso z rożna, idealnie doprawione i soczyste, podawane w świeżej, chrupiącej bułce. Dopełnieniem smaku są świeże warzywa oraz sosy do wyboru – czosnkowy, ostry lub jogurtowy. Idealna propozycja na szybki, sycący posiłek!"
+    })
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hadhdhgfvcjrtfj'
 app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
 
-# Obsługa róznych domen
+# Obsługa róznych domen/portów
 CORS(app, origins=["http://127.0.0.1:2501"], supports_credentials=True)
 
 # Ustawienie plików cookies

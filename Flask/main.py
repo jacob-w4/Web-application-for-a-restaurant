@@ -11,13 +11,21 @@ app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
 
 # Obsługa róznych domen/portów
 CORS(app, origins=["http://127.0.0.1:2501"], supports_credentials=True)
+#CORS(app, supports_credentials=True, origins=["http://jakubplewa.pl"])
 
-# Ustawienie plików cookies
-app.config['SESSION_COOKIE_SAMESITE'] = "None"
-app.config['SESSION_COOKIE_SECURE'] = True  # Wymagane dla SameSite=None
+# Ustawienie plików cookies - lokalnie
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = True # Wymagane dla SameSite=None
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 
+# Ustawienie plików cookies - serwer Linux
+#app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+#app.config['SESSION_COOKIE_SECURE'] = False
+#app.config['SESSION_COOKIE_HTTPONLY'] = True
+
+
 local_url = "http://127.0.0.1:2501/WWW/"
+#local_url = "http://jakubplewa.pl:80/"
 
 
 @app.route("/login", methods=["POST"])
@@ -37,6 +45,7 @@ def login():
             return redirect(location=f"{local_url}login/login.html")
         else:
             print("200: Pomyslnie zalogowano")
+            session.permanent = True
             session['username'] = username # zapisanie w sesji
             return redirect(location=f"{local_url}home/home.html")
     else:

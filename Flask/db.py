@@ -38,3 +38,40 @@ def get_menu():
     cursor.close()
     database.close()
     return result
+
+def get_user_data(user):
+    database = connect()
+    cursor = database.cursor(dictionary=True)
+
+    query = "SELECT username, password, email, city, street, apartment_num, phone FROM `lokal-kebab`.Users WHERE username = %s"
+    cursor.execute(query, (user,))
+
+    result = cursor.fetchone()
+    result = json.dumps(result)
+
+    cursor.close()
+    database.close()
+    return result
+
+def change_user_data(column, data, user):
+    database = connect()
+    cursor = database.cursor()
+
+    if column == "email":
+        query = "UPDATE `lokal-kebab`.Users SET email = %s WHERE username = %s"
+    elif column == "password":
+        query = "UPDATE `lokal-kebab`.Users SET password = %s WHERE username = %s"        
+    elif column == "city":
+        query = "UPDATE `lokal-kebab`.Users SET city = %s WHERE username = %s"
+    elif column == "street":
+        query = "UPDATE `lokal-kebab`.Users SET street = %s WHERE username = %s"
+    elif column == "apartment_num":
+        query = "UPDATE `lokal-kebab`.Users SET apartment_num = %s WHERE username = %s"
+    elif column == "phone":
+        query = "UPDATE `lokal-kebab`.Users SET phone = %s WHERE username = %s"
+
+    cursor.execute(query, (data, user))
+    database.commit()
+
+    cursor.close()
+    database.close()

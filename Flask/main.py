@@ -69,6 +69,23 @@ def get_menu():
     return data
 
 
+@app.route('/get_user_profile', methods=['GET'])
+def get_user():
+    user = session['username']
+    data = database.get_user_data(user)
+    return data
+
+
+@app.route('/change_user_data', methods=['PUT'])
+def change_user_data():
+    data = request.json
+
+    key = data.get('field')
+    value = data.get('value')
+   
+    database.change_user_data(key, value, session['username'])
+    return "200 Dane zostały zmienione"
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=2500)

@@ -20,60 +20,18 @@
         </div>
     </div>
 
-    <div class="menu-container">
-        <h1>Nasze Menu</h1>
-
-        <!-- Sekcja Kebaby -->
-        <section class="menu-section">
-            <h2>Kebaby</h2>
-            <div class="menu-item">
-                <button class="add-button">+</button>
-                <h3>Kebab w bułce</h3>
-                <p>Soczyste mięso, świeże warzywa, sos do wyboru</p>
-                <span class="price">15 zł</span>
+    <div class="container">
+        <div class="left-section" id="menu-container">
+        </div>
+        <div class="right-section">
+            <h1 id="order-header">Twoje Zamówienie</h1>
+            <div class="order-list" id="order-list">
             </div>
-            <div class="menu-item">
-                <button class="add-button">+</button>
-                <h3>Kebab na talerzu</h3>
-                <p>Mięso z frytkami, warzywami i sosem</p>
-                <span class="price">20 zł</span>
-            </div>
-        </section>
-
-        <!-- Sekcja Dania Dodatkowe -->
-        <section class="menu-section">
-            <h2>Dania Dodatkowe</h2>
-            <div class="menu-item">
-                <button class="add-button">+</button>
-                <h3>Frytki</h3>
-                <p>Chrupiące ziemniaczki smażone na złoty kolor</p>
-                <span class="price">8 zł</span>
-            </div>
-            <div class="menu-item">
-                <button class="add-button">+</button>
-                <h3>Sałatka</h3>
-                <p>Świeże warzywa z lekkim dressingiem</p>
-                <span class="price">10 zł</span>
-            </div>
-        </section>
-
-        <!-- Sekcja Napojów -->
-        <section class="menu-section">
-            <h2>Napoje</h2>
-            <div class="menu-item">
-                <button class="add-button">+</button>
-                <h3>Cola</h3>
-                <p>250 ml</p>
-                <span class="price">5 zł</span>
-            </div>
-            <div class="menu-item">
-                <button class="add-button">+</button>
-                <h3>Woda mineralna</h3>
-                <p>250 ml, gazowana lub niegazowana</p>
-                <span class="price">4 zł</span>
-            </div>
-        </section>
+            <button class="order-button" id="finish">Kontynuuj zamówienie</button>   
+        </div>
     </div>
+   
+    <script src="/WWW/JavaScript/get_menu.js"> </script>
     <script src="/WWW/JavaScript/check_session.js"> </script>
 </body>
 </html>

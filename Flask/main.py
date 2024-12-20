@@ -61,6 +61,12 @@ def check_session():
         return jsonify({'status': 'logged_in'})
     else:
         return jsonify({'status': 'not_logged_in'})
+    
+
+@app.route('/get_menu', methods=['GET'])
+def get_menu():
+    data = database.get_menu()
+    return data
 
 
 

@@ -61,6 +61,27 @@ def logout():
     else:
         return jsonify({'status': 'logged_out'})
 
+@app.route("/register", methods=["POST"])
+def register():
+    # Pobieranie danych od klienta
+    data = request.json
+
+    username = data.get('username')
+    password = data.get('password')
+    password_check = data.get('password2')
+    phone = data.get('phone')
+    email = data.get('email')
+
+    if database.check_username(username) != None:
+        return jsonify({'status': 'failed',
+                        'details': 'Konto o podanej nazwie już istnieje'})
+    elif password != password_check:
+         return jsonify({'status': 'failed',
+                        'details': 'Podane hasła nie zgadzaja się'})
+    elif database.create_user(username, password, email, phone) == 'success':
+        return jsonify({'status': 'success',
+                        'details': 'Pomyślnie stworzono konto'})
+
 
 @app.route('/check_session', methods=['GET'])
 def check_session():

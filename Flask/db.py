@@ -10,7 +10,6 @@ def connect():
     )
     return database
 
-
 def get_user(username, password):
     database = connect()
     cursor = database.cursor()
@@ -75,3 +74,29 @@ def change_user_data(column, data, user):
 
     cursor.close()
     database.close()
+
+def check_username(username):
+    database = connect()
+    cursor = database.cursor()
+
+    query = "SELECT username FROM `lokal-kebab`.Users WHERE username = %s" 
+    cursor.execute(query, (username,))
+
+    result = cursor.fetchone()
+
+    cursor.close()
+    database.close()
+    return result
+
+def create_user(username, password, email, phone):
+    database = connect()
+    cursor = database.cursor()
+
+    query = "INSERT INTO `lokal-kebab`.Users (username, password, email, phone) VALUES (%s, %s, %s, %s)"
+    cursor.execute(query, (username, password, email, phone)) 
+    database.commit()
+
+    cursor.close()
+    database.close()
+
+    return 'success'

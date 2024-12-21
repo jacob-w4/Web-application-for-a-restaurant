@@ -21,6 +21,14 @@ input {
     font-size: 16px;
     background-color: #e68200;
     color: white;
+
+    height: 45px;
+    width: 460px;
+    border-radius: 5px;
+    margin: 0px 20px 20px 20px;
+    padding: 12px 10px;
+
+    border-style: none;
 }
 
 h1 {
@@ -31,7 +39,7 @@ h1 {
     margin-top: 40px;
 }
 
-form {
+#form {
    display: flex;
    flex-direction: column;
    width: 100%;
@@ -46,8 +54,9 @@ div {
 
 .container {
     background-color: rgba(0, 0, 0, 0.6);
-    width: 400px;
-    height: 450px;
+    width: 500px;
+    height: 70vh;
+    padding: 2% 4%;
     border-style: outset;
     display: flex;
     justify-content: center;
@@ -62,8 +71,14 @@ input {
 }
 
 a {
-    margin-top: 15px;
+    margin-top: 30px;
     text-align: center;
     color: white;
-    font-weight: 550;
+}
+
+.status {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 21px;
+    color: red;
+    text-align: center;
 }

@@ -48,6 +48,15 @@ body {
   display: flex;
 }
 
+#logoutButton {
+  display: none;
+}
+
+
+#profileButton {
+  display: none;
+}
+
 .section {
     display: flex;
     justify-content: center;

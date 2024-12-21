@@ -51,6 +51,15 @@ body {
   display: flex;
 }
 
+#logoutButton {
+  display: none;
+}
+
+#profileButton {
+  display: none;
+}
+
+
 
 .text-block {
     position: absolute;

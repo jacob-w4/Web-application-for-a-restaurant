@@ -55,6 +55,17 @@ body {
   display: flex;
 }
 
+#logoutButton {
+  display: none;
+}
+
+#profileButton {
+  display: none;
+}
+
+
+
+
 .container {
   flex-grow: 1;
   display: flex;    

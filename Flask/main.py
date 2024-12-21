@@ -51,6 +51,15 @@ def login():
     else:
         print("400: Podaj nazwe uzytkownika oraz haslo")
         return redirect(location=f"{local_url}login/login.html")
+    
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    session.pop('username')
+    if 'username' in session:
+        return jsonify({'status': 'logged_in'})
+    else:
+        return jsonify({'status': 'logged_out'})
 
 
 @app.route('/check_session', methods=['GET'])
@@ -58,7 +67,8 @@ def check_session():
     # Sprawdzamy, czy użytkownik jest zalogowany
     print(session)
     if 'username' in session:
-        return jsonify({'status': 'logged_in'})
+        return jsonify({'status': 'logged_in',
+                        'user': session['username']})
     else:
         return jsonify({'status': 'not_logged_in'})
     

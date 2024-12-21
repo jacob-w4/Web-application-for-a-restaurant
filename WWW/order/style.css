@@ -43,3 +43,12 @@ body {
   height: 100%;
   display: flex;
 }
+
+#logoutButton {
+  display: none;
+}
+
+#profileButton {
+  display: none;
+}
+

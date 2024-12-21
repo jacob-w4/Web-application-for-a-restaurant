@@ -44,6 +44,16 @@ body {
   display: flex;
 }
 
+#logoutButton {
+  display: none;
+}
+
+#profileButton {
+  display: none;
+}
+
+
+
 .contact-container {
   margin: 20px auto;
   max-width: 800px;

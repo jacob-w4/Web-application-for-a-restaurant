@@ -130,9 +130,7 @@ def make_order():
     apartment_num = data.get('apartment_num')
     phone = data.get('phone')
 
-    print(data['items'])
-    print(type(data['items']))
-    database.make_order(session['username'], items, city, street, apartment_num, phone)
+    database.make_order(session['username'], data['items'], city, street, apartment_num, phone)
     return "200 536363e"
 
 if __name__ == "__main__":

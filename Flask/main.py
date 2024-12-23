@@ -124,13 +124,15 @@ def change_user_data():
 def make_order():
     data = request.get_json()
 
-    items = data.get('items')
     city = data.get('city')
     street = data.get('street')
     apartment_num = data.get('apartment_num')
     phone = data.get('phone')
 
-    database.make_order(session['username'], data['items'], city, street, apartment_num, phone)
+    if 'username' in session:
+        database.make_order(session['username'], data['items'], city, street, apartment_num, phone)
+    else:
+        database.make_order(None, data['items'], city, street, apartment_num, phone)
     return "200 536363e"
 
 if __name__ == "__main__":

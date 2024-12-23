@@ -104,6 +104,9 @@ def create_user(username, password, email, phone):
 
 def make_order(username, items, city, street, apartment_num, phone):
 
+    if username == None:
+        username = create_guest(city, street, apartment_num, phone)
+
     database = connect()
     cursor = database.cursor()
 
@@ -142,3 +145,20 @@ def make_order(username, items, city, street, apartment_num, phone):
     database.close()
 
     return 'success'
+
+def create_guest(city, street, apartment_num, phone):
+    start_date = datetime.now().strftime('%d%m%Y%H%M%S')
+    username = "guest" + start_date
+    
+    database = connect()
+    cursor = database.cursor()
+
+    query = "INSERT INTO `lokal-kebab`.Users (username, city, street, apartment_num, phone, is_temp) VALUES (%s, %s, %s, %s, %s, 'YES')"
+    cursor.execute(query, (username, city, street, apartment_num, phone))
+
+    database.commit()
+
+    cursor.close()
+    database.close()
+
+    return username

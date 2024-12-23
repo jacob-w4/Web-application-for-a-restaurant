@@ -22,6 +22,51 @@
         </div>
     </div>
 
+    <div class="center">
+        <div class="cart" id="cart">
+            <h1 id="order-header">Twoje Zamówienie</h1>
+            <div class="order-list" id="order-list">
+            </div>
+            <button class="order-button" id="finish" onclick="orderRedirect();">Przejdź dalej</button>
+        </div>
+        <div class="cart" id="address">
+            <h1 id="order-header">Dane kontaktowe</h1>
+            <div class="item">
+                <p class="address-item">Miasto</p>
+                <input type="text" class="text" id="city"></input>
+            </div>
+            <div class="item">
+                <p class="address-item">Ulica</p>
+                <input type="text" class="text"  id="street"></input>
+            </div>
+            <div class="item">
+                <p class="address-item">Numer domu</p>
+                <input type="text" class="text" id="apartment_num"></input>
+            </div>
+            <div class="item">
+                <p class="address-item">Telefon</p>
+                <input type="tel" class="text" id="phone"></input>
+            </div>
+            <div class="final-buttons">
+                <button class="button" onclick="make_order();">Złóż Zamówienie</button>
+                <button class="button" onclick="orderRedirectBack();">Powrót</button>
+            </div>
+        </div>   
+    </div>
+
+    <script src="/WWW/JavaScript/cart.js"> </script>
+    <script src="/WWW/JavaScript/make_order.js"> </script>
     <script src="/WWW/JavaScript/check_session.js"> </script>
+    <script>
+        function orderRedirect() { 
+                document.getElementById("cart").style.display = 'none';
+                document.getElementById("address").style.display = 'flex';
+                get_user_data()
+            }
+        function orderRedirectBack() { 
+            document.getElementById("address").style.display = 'none';
+            document.getElementById("cart").style.display = 'flex';
+        }
+    </script>
 </body>
 </html>

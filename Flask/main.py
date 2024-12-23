@@ -102,9 +102,12 @@ def get_menu():
 
 @app.route('/get_user_profile', methods=['GET'])
 def get_user():
-    user = session['username']
-    data = database.get_user_data(user)
-    return data
+    if 'username' in session:
+        user = session['username']
+        data = database.get_user_data(user)
+        return data
+    else:
+        return jsonify({'status': 'not_logged_in'})
 
 
 @app.route('/change_user_data', methods=['PUT'])
@@ -117,6 +120,20 @@ def change_user_data():
     database.change_user_data(key, value, session['username'])
     return "200 Dane zostały zmienione"
 
+@app.route('/make_order', methods=['POST'])
+def make_order():
+    data = request.get_json()
+
+    items = data.get('items')
+    city = data.get('city')
+    street = data.get('street')
+    apartment_num = data.get('apartment_num')
+    phone = data.get('phone')
+
+    print(data['items'])
+    print(type(data['items']))
+    database.make_order(session['username'], items, city, street, apartment_num, phone)
+    return "200 536363e"
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=2500)

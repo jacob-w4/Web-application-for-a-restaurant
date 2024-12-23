@@ -1,3 +1,4 @@
+from datetime import datetime
 import mysql.connector
 import json
 
@@ -100,3 +101,54 @@ def create_user(username, password, email, phone):
     database.close()
 
     return 'success'
+
+def make_order(username, items, city, street, apartment_num, phone):
+    if username == None:
+        pass
+
+    database = connect()
+    cursor = database.cursor()
+
+    query = "SELECT menu_id FROM `lokal-kebab`.Menu WHERE name = %s"
+    menu_ids = []
+    for item in items:
+        cursor.execute(query, (item["name"],))
+        result = cursor.fetchone()  # Pobiera jeden wynik
+        if result:  # Sprawdza, czy wynik istnieje
+            menu_ids.append(result[0])  # Dodaje menu_id (pierwsza kolumna w wyniku zapytania)
+
+
+    query = "SELECT user_id FROM `lokal-kebab`.Users WHERE username = %s"
+    cursor.execute(query, (username,)) 
+    user_id = cursor.fetchone()[0]
+
+    start_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    status = "In progress"
+
+    query = "INSERT INTO `lokal-kebab`.Orders (status, Users_user_id, startDate) VALUES (%s, %s, %s)"
+    cursor.execute(query, (status, user_id, start_date)) 
+    order_id = cursor.lastrowid
+
+    query = "INSERT INTO `lokal-kebab`.Order_menu (order_id, menu_id) VALUES (%s, %s)"
+    for menu_id in menu_ids:
+        cursor.execute(query, (order_id, menu_id)) 
+
+    database.commit()
+
+    cursor.close()
+    database.close()
+
+    return 'success'
+
+def create_guest(city, street, apartment_num, phone):
+    database = connect()
+    cursor = database.cursor()
+
+    query = "INSERT INTO `lokal-kebab`.Users (username, city, street, apartment_num, phone) VALUES (%s, %s, %s, %s, %s)"
+    cursor.execute(query, (city, street, apartment_num, phone)) 
+    database.commit()
+    # TODO
+
+
+    cursor.close()
+    database.close()

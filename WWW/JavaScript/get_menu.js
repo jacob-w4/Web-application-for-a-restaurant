@@ -34,7 +34,7 @@ function get_menu() {
             const button = document.createElement("button")
             button.textContent = 'Zamów'
             button.className = "order-button"
-            button.onclick = () => order(item.name, item.price);
+            button.onclick = () => cart_add(item.name, item.price);
 
             // Tworzenie item-desc
             itemDesc.appendChild(title)
@@ -52,49 +52,7 @@ function get_menu() {
     });
 }
 
-function order(item, price) {
-    const orderContainer = document.getElementById("order-list"); // Kontener na dane menu
 
-    if (orderContainer.children.length >= 8) {
-        return;  // Zatrzymujemy dalsze tworzenie nowych elementów
-    }
-
-    const orderItem = document.createElement("div");
-    orderItem.className = "order-item";
-
-    const itemName = document.createElement("p");
-    itemName.className = "order-name";
-    itemName.textContent = item;
-
-    const rightSection = document.createElement("div");
-    rightSection.className = "buttons";
-
-    const priceContainer = document.createElement("p");
-    priceContainer.className = "order-price";
-    priceContainer.textContent =  `${price} zł`;
-
-    const addButton = document.createElement("button");
-    addButton.textContent = '+';
-    const subButton = document.createElement("button");
-    subButton.textContent = '-';
-    subButton.onclick = function () { 
-        orderItem.remove()
-    }
-
-    addButton.className = "add-button";
-    subButton.className = "add-button";
-
-
-    rightSection.appendChild(priceContainer)
-    rightSection.appendChild(addButton)
-    rightSection.appendChild(subButton)
-
-
-    orderItem.appendChild(itemName)
-    orderItem.appendChild(rightSection)
-
-    orderContainer.appendChild(orderItem)
-}
 
 
 // Uruchamiamy funkcję po załadowaniu strony

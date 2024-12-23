@@ -11,6 +11,11 @@
 
 body {
  margin: 0 auto;
+
+ margin: 0 auto;
+ display: flex;
+ flex-direction: column;
+ min-height: 100vh;
 }
 
 .topnav a {
@@ -52,3 +57,158 @@ body {
   display: none;
 }
 
+#header {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+h1 {
+  margin: 0;
+}
+
+.order-button {
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #e68200;
+  color: white;
+  height: 45px;
+  border-radius: 8px;
+  border-style: none;
+}
+
+.order-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+}
+
+.order-item {
+  display: flex;
+  margin-bottom: 1%;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  border:rgb(245, 202, 122) solid;
+}
+
+.center {
+  flex-grow: 1;
+  justify-items: center;
+}
+
+.cart {
+  display: flex; 
+  flex-direction: column;
+  position: relative;
+
+  align-items: center;
+  background-color:blanchedalmond;
+  flex-grow: 1;
+  margin: 30px;
+  padding: 2vw;
+  width: 40vw;
+  height: 75vh;
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.add-button {
+  border-radius: 20px;
+  background-color: #e68200;
+  color: blanchedalmond;
+  height: 40px;
+  width: 40px;
+  border-style: none;
+  align-items: center;
+  display: flex;
+  margin: 1%;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+button:hover {background-color: #ca8a13;}
+
+button:active {
+  background-color: #ca8a13;
+  box-shadow: 0 5px #f5f5f5;
+  transform: translateY(4px);
+}
+
+#order-header {
+  border-bottom: #e68200 dashed;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 1.5%;
+  margin-bottom: 1%;
+}
+
+.order-name {
+  font-weight: bold;
+}
+
+#finish {
+  bottom: 0;
+
+  width: 30%;
+  margin-bottom: 1%;
+  position: absolute;
+}
+
+#address {
+  display: none;
+
+
+  flex-direction: column;
+
+  align-items: center; 
+  position: relative;
+}
+
+.item {
+  display: flex;
+  width: 70%;
+  justify-content: space-between;
+  padding: 2%;
+  align-items: center;
+}
+
+.address-item {
+  font-size: 1.2rem;
+}
+
+input {
+  height: 60%;
+  width: 50%;
+}
+
+.final-buttons {
+  display: flex;
+  justify-content: space-around;
+  width: 70%;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 1%;
+  padding: 2%;
+}
+
+.button {
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #e68200;
+  color: white;
+  height: 45px;
+  border-radius: 8px;
+  border-style: none;
+  width: 40%;
+}

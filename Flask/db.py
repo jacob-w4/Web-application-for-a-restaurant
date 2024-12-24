@@ -103,62 +103,65 @@ def create_user(username, password, email, phone):
     return 'success'
 
 def make_order(username, items, city, street, apartment_num, phone):
+    try:
+        if username == None:
+            username = create_guest(city, street, apartment_num, phone)
+            if username == None:
+                return 'failed'
 
-    if username == None:
-        username = create_guest(city, street, apartment_num, phone)
+        database = connect()
+        cursor = database.cursor()
 
-    database = connect()
-    cursor = database.cursor()
+        query = "SELECT menu_id FROM `lokal-kebab`.Menu WHERE name = %s"
+        menu_ids = []
+        for item in items:
+            cursor.execute(query, (item["name"],))
+            result = cursor.fetchone()  # Pobiera jeden wynik
+            if result:  # Sprawdza, czy wynik istnieje
+                menu_ids.append(result[0])  # Dodaje menu_id (pierwsza kolumna w wyniku zapytania)
 
-    query = "SELECT menu_id FROM `lokal-kebab`.Menu WHERE name = %s"
-    menu_ids = []
-    for item in items:
-        cursor.execute(query, (item["name"],))
-        result = cursor.fetchone()  # Pobiera jeden wynik
-        if result:  # Sprawdza, czy wynik istnieje
-            menu_ids.append(result[0])  # Dodaje menu_id (pierwsza kolumna w wyniku zapytania)
+        query = "SELECT user_id FROM `lokal-kebab`.Users WHERE username = %s"
+        cursor.execute(query, (username,)) 
+        user_id = cursor.fetchone()[0]
 
-    print(menu_ids)
+        start_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        status = "In progress"
 
-    query = "SELECT user_id FROM `lokal-kebab`.Users WHERE username = %s"
-    cursor.execute(query, (username,)) 
-    user_id = cursor.fetchone()[0]
+        query = "INSERT INTO `lokal-kebab`.Orders (status, Users_user_id, startDate) VALUES (%s, %s, %s)"
+        cursor.execute(query, (status, user_id, start_date)) 
+        order_id = cursor.lastrowid
 
-    print(user_id)
+        query = "INSERT INTO `lokal-kebab`.Order_menu (order_id, menu_id) VALUES (%s, %s)"
+        for menu_id in menu_ids:
+            cursor.execute(query, (order_id, menu_id)) 
 
-    start_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    status = "In progress"
+        database.commit()
 
-    query = "INSERT INTO `lokal-kebab`.Orders (status, Users_user_id, startDate) VALUES (%s, %s, %s)"
-    cursor.execute(query, (status, user_id, start_date)) 
-    order_id = cursor.lastrowid
+        cursor.close()
+        database.close()
 
-    print(order_id)
-
-    query = "INSERT INTO `lokal-kebab`.Order_menu (order_id, menu_id) VALUES (%s, %s)"
-    for menu_id in menu_ids:
-        cursor.execute(query, (order_id, menu_id)) 
-
-    database.commit()
-
-    cursor.close()
-    database.close()
-
-    return 'success'
+        return 'success'
+    except:
+        print("Cannot make an order")
+        return 'failed'
 
 def create_guest(city, street, apartment_num, phone):
-    start_date = datetime.now().strftime('%d%m%Y%H%M%S')
-    username = "guest" + start_date
+    try:
+        start_date = datetime.now().strftime('%d%m%Y%H%M%S')
+        username = "guest" + start_date
     
-    database = connect()
-    cursor = database.cursor()
+        database = connect()
+        cursor = database.cursor()
 
-    query = "INSERT INTO `lokal-kebab`.Users (username, city, street, apartment_num, phone, is_temp) VALUES (%s, %s, %s, %s, %s, 'YES')"
-    cursor.execute(query, (username, city, street, apartment_num, phone))
+        query = "INSERT INTO `lokal-kebab`.Users (username, city, street, apartment_num, phone, is_temp) VALUES (%s, %s, %s, %s, %s, 'YES')"
+        cursor.execute(query, (username, city, street, apartment_num, phone))
 
-    database.commit()
+        database.commit()
 
-    cursor.close()
-    database.close()
+        cursor.close()
+        database.close()
 
-    return username
+        return username
+    except:
+        print("Cannot create a guest account")
+        return None

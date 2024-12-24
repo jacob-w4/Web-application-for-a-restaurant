@@ -212,3 +212,7 @@ input {
   border-style: none;
   width: 40%;
 }
+
+.status {
+  font-size: 40px;
+}

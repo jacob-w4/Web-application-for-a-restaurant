@@ -38,7 +38,28 @@ function make_order() {
     })
     .then(response => response.json()) // Dekodowanie JSON z odpowiedzi
     .then(result => { 
-        // localStorage.clear();
+        if (result.status == 'success') {
+            localStorage.clear();
+            const container = document.getElementById('center')
+            document.getElementById("cart").style.display = 'none';
+            document.getElementById("address").style.display = 'none';
+
+            const message = document.createElement('p')
+            message.textContent = "Zamówienie zostało złożone! Dziękujemy!"
+            message.style.color = "green"
+            message.className = 'status'
+            container.appendChild(message)
+        } else {
+            const container = document.getElementById('center')
+            document.getElementById("cart").style.display = 'none';
+            document.getElementById("address").style.display = 'none';
+
+            const message = document.createElement('p')
+            message.textContent = "Błąd podczas składania zamówienia, spróbuj jeszcze raz"
+            message.style.color = "red"
+            message.className = 'status'
+            container.appendChild(message)
+        }
     });
 
     

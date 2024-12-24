@@ -130,10 +130,10 @@ def make_order():
     phone = data.get('phone')
 
     if 'username' in session:
-        database.make_order(session['username'], data['items'], city, street, apartment_num, phone)
+        status = database.make_order(session['username'], data['items'], city, street, apartment_num, phone)
     else:
-        database.make_order(None, data['items'], city, street, apartment_num, phone)
-    return "200 536363e"
+        status = database.make_order(None, data['items'], city, street, apartment_num, phone)
+    return jsonify({'status' : status})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=2500)

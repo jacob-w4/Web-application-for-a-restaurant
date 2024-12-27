@@ -29,7 +29,7 @@ def get_menu():
     database = connect()
     cursor = database.cursor(dictionary=True)
     # Zapytanie do bazy danych
-    query = "SELECT name, price, description, img_url FROM `lokal-kebab`.Menu" 
+    query = "SELECT * FROM `lokal-kebab`.Menu" 
     cursor.execute(query)
 
     result = cursor.fetchall()
@@ -192,3 +192,71 @@ def delete_user_from_db(username):
     database.commit()
     cursor.close()
     database.close()
+
+def change_menu(column, data, name):
+    database = connect()
+    cursor = database.cursor()
+
+    query = "SELECT menu_id FROM `lokal-kebab`.Menu WHERE name = %s"
+    cursor.execute(query, (name,))
+    menu_id = cursor.fetchone()[0]
+
+    if column == "name":
+        query = "UPDATE `lokal-kebab`.Menu SET name = %s WHERE menu_id = %s"
+    elif column == "price":
+        query = "UPDATE `lokal-kebab`.Menu SET price = %s WHERE menu_id = %s"        
+    elif column == "description":
+        query = "UPDATE `lokal-kebab`.Menu SET description = %s WHERE menu_id = %s"
+    elif column == "img_url":
+        query = "UPDATE `lokal-kebab`.Menu SET img_url = %s WHERE menu_id = %s"
+
+    cursor.execute(query, (data, menu_id))
+    database.commit()
+
+    cursor.close()
+    database.close()
+
+def get_position_from_menu(name):
+    database = connect()
+    cursor = database.cursor(dictionary=True)
+
+    query = "SELECT * FROM `lokal-kebab`.Menu WHERE name = %s"
+    cursor.execute(query, (name,))
+
+    data = cursor.fetchone()
+    data = json.dumps(data)
+    cursor.close()
+    database.close()
+    return data
+
+def delete_menu_from_db(name):
+    database = connect()
+    cursor = database.cursor()
+
+    query = "DELETE FROM `lokal-kebab`.Menu WHERE name = %s"
+    cursor.execute(query, (name,))
+
+    database.commit()
+    cursor.close()
+    database.close()   
+
+def create_menu(name, price, description, img_url):
+    try:    
+        database = connect()
+        cursor = database.cursor()
+
+        query = "INSERT INTO `lokal-kebab`.Menu (name, price, description, img_url) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (name, price, description, img_url))
+
+        database.commit()
+
+        cursor.close()
+        database.close()
+
+    except:
+        print("Cannot create menu")
+        cursor.close()
+        database.close()
+
+
+

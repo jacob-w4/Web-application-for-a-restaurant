@@ -56,7 +56,6 @@ def login():
         print("400: Podaj nazwe uzytkownika oraz haslo")
         return redirect(location=f"{local_url}login/login.html")
     
-
 @app.route("/logout", methods=["GET"])
 def logout():
     session.pop('username')
@@ -86,7 +85,6 @@ def register():
         return jsonify({'status': 'success',
                         'details': 'Pomyślnie stworzono konto'})
 
-
 @app.route('/check_session', methods=['GET'])
 def check_session():
     # Sprawdzamy, czy użytkownik jest zalogowany
@@ -97,12 +95,10 @@ def check_session():
     else:
         return jsonify({'status': 'not_logged_in'})
     
-
 @app.route('/get_menu', methods=['GET'])
 def get_menu():
     data = database.get_menu()
     return data
-
 
 @app.route('/get_user_profile', methods=['GET'])
 def get_user():
@@ -112,7 +108,6 @@ def get_user():
         return data
     else:
         return jsonify({'status': 'not_logged_in'})
-
 
 @app.route('/change_user_data', methods=['PUT'])
 def change_user_data():
@@ -160,6 +155,40 @@ def search_user():
     else:
         user = database.get_user_data(data)
         return user
+
+@app.route('/change_menu', methods=['PUT'])
+def change_menu():
+    data = request.json
+
+    name = data.get('menu_name')
+    key = data.get('field')
+    value = data.get('value')
+   
+    database.change_menu(key, value, name)
+    return "200 Dane zostały zmienione"
+
+@app.route('/search_menu', methods=['GET'])
+def search_menu():
+    data = request.args.get('menu')
+    print(data)
+    if data == '':
+        menu = database.get_menu()
+        return menu
+    else:
+        pos = database.get_position_from_menu(data)
+        return pos
+
+@app.route('/delete_from_menu', methods=['DELETE'])
+def delete_menu():
+    data = request.json
+    database.delete_menu_from_db(data['menu'])
+    return 'success'
+
+@app.route('/add_to_menu', methods=['POST'])
+def add_to_menu():
+    data = request.json
+    database.create_menu(data['name'], data['price'], data['description'], data['img_url'])
+    return 'success'
 
 
 if __name__ == "__main__":

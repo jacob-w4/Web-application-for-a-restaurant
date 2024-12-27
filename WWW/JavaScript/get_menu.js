@@ -11,8 +11,6 @@ function get_menu() {
             const itemContainer = document.createElement("div");
             itemContainer.className = "item"; // Dodanie klasy dla stylizacji
 
-            console.log(item)
-
             const img = document.createElement("img");
             img.className = "item-img"
             img.src = item.img_url;

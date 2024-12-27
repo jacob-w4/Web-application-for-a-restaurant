@@ -62,6 +62,7 @@ function display_users(data) {
                 const deleteButton = document.createElement('button');
                 deleteButton.className = 'delete'
                 deleteButton.textContent = 'Usuń konto';
+                deleteButton.type = 'button'
                 deleteButton.onclick = () => delete_account(user.username);
                 form.appendChild(deleteButton);
             }

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="topnav">
+        <div class="topnav-left">
+            <img src="/WWW/home/res/KEBAB.png" alt="Kebab Logo" id="kebab-img">
+            <a href="/WWW/admin/users/users.html">Użytkownicy</a>
+            <a href="/WWW/admin/menu/menu.html">Menu</a>
+            <a href="">Zamówienia</a>
+        </div>
+        <div class="topnav-right">
+            <a id="profileButton"></a>
+            <a href="javascript:logout();" id="logoutButton">Wyloguj się</a>
+            <a href="/WWW/login/login.html" id="loginButton">Zaloguj się</a>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="left-section">
+            <div class="search-div">
+                <input type="text" placeholder="Nazwa pozycji" id="search-input">
+                <button id="search-button" onclick="search_menu();">Wyszukaj</button>
+            </div>
+            <div class="container" id="container">
+            </div>
+        </div>
+        <div class="right-section">
+            <h1 id="menu-header">Dodaj do menu</h1>
+            <div class="item">
+                <p>Nazwa</p>
+                <input type="text" class="add-text" id="add-name" placeholder="Nazwa pozycji">
+            </div>
+            <div class="item">
+                <p>Cena</p>
+                <input type="text" class="add-text" id="add-price" placeholder="Cena">
+            </div>
+            <div class="item">
+                <p>Opis</p>
+                <input type="text" class="add-text" id="add-description" placeholder="Opis pozycji">
+            </div>
+            <div class="item">
+                <p>Zdjęcie</p>
+                <input type="text" class="add-text" id="add-url" placeholder="Link do zdjęcia">
+            </div>
+            <button id="add" onclick="add_menu();">Dodaj</button>
+        </div>
+    </div>
+
+    <script src="/WWW/JavaScript/admin/get_menu.js"></script>
+    <script src="/WWW/JavaScript/check_session.js"> </script>
+</body>
+</html>

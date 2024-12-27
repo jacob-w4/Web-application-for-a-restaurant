@@ -43,7 +43,7 @@ def get_user_data(user):
     database = connect()
     cursor = database.cursor(dictionary=True)
 
-    query = "SELECT username, password, email, city, street, apartment_num, phone FROM `lokal-kebab`.Users WHERE username = %s"
+    query = "SELECT user_id, username, password, email, city, street, apartment_num, phone FROM `lokal-kebab`.Users WHERE username = %s"
     cursor.execute(query, (user,))
 
     result = cursor.fetchone()
@@ -165,3 +165,30 @@ def create_guest(city, street, apartment_num, phone):
     except:
         print("Cannot create a guest account")
         return None
+    
+def get_users_data():
+    database = connect()
+    cursor = database.cursor(dictionary=True)
+
+    query = "SELECT user_id ,username, password, email, city, street, apartment_num, phone FROM `lokal-kebab`.Users WHERE is_temp = 'NO' ORDER BY username ASC"
+    cursor.execute(query)
+
+    result = cursor.fetchall()
+    result = json.dumps(result)
+
+    cursor.close()
+    database.close()
+    return result   
+
+def delete_user_from_db(username):
+    database = connect()
+    cursor = database.cursor()
+
+    print(username)
+
+    query = "DELETE FROM `lokal-kebab`.Users WHERE username = %s"
+    cursor.execute(query, (username,))
+
+    database.commit()
+    cursor.close()
+    database.close()

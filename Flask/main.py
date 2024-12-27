@@ -43,6 +43,10 @@ def login():
         if user is None:
             print("404: Uzytkownik nie istnieje")
             return redirect(location=f"{local_url}login/login.html")
+        elif username == 'admin':
+            print("200: Pomyslnie zalogowano")
+            session['username'] = username
+            return redirect(location=f"{local_url}admin/users/users.html")
         else:
             print("200: Pomyslnie zalogowano")
             session.permanent = True
@@ -114,10 +118,11 @@ def get_user():
 def change_user_data():
     data = request.json
 
+    username = data.get('user')
     key = data.get('field')
     value = data.get('value')
    
-    database.change_user_data(key, value, session['username'])
+    database.change_user_data(key, value, username)
     return "200 Dane zostały zmienione"
 
 @app.route('/make_order', methods=['POST'])
@@ -134,6 +139,28 @@ def make_order():
     else:
         status = database.make_order(None, data['items'], city, street, apartment_num, phone)
     return jsonify({'status' : status})
+
+@app.route('/get_users', methods=['GET'])
+def get_users():
+    data = database.get_users_data()
+    return data
+
+@app.route('/delete_user', methods=['DELETE'])
+def delete_user():
+    data = request.json
+    database.delete_user_from_db(data['user'])
+    return 'success'
+
+@app.route('/search_user_data', methods=['GET'])
+def search_user():
+    data = request.args.get('user')
+    if data == '':
+        users = database.get_users_data()
+        return users
+    else:
+        user = database.get_user_data(data)
+        return user
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=2500)

@@ -2,6 +2,13 @@ function get_user_data() {
     fetch("http://localhost:2500/get_user_profile", {method: "GET", credentials: 'include'})
     .then(response => response.json()) 
     .then(data => {
+        document.getElementById("password-button").onclick = () => change_data('password', data.username)
+        document.getElementById("email-button").onclick = () => change_data('email', data.username)
+        document.getElementById("city-button").onclick = () => change_data('city', data.username)
+        document.getElementById("street-button").onclick = () => change_data('street', data.username)
+        document.getElementById("apartment_num-button").onclick = () => change_data('apartment_num', data.username)
+        document.getElementById("phone-button").onclick = () => change_data('phone', data.username)
+
         document.getElementById("h1").innerText = `Witaj ${data.username}!` 
         document.getElementById("password").value = data.password
         document.getElementById("email").value = data.email
@@ -12,10 +19,11 @@ function get_user_data() {
     });
 }
 
-function change_data(dataID) {
+function change_data(dataID, username) {
 
     const data = document.getElementById(dataID).value
     const data_to_send = {
+        user : username,
         field : dataID,
         value : data
     };

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="topnav">
+        <div class="topnav-left">
+            <img src="/WWW/home/res/KEBAB.png" alt="Kebab Logo" id="kebab-img">
+            <a href="/WWW/admin/users/users.html">Użytkownicy</a>
+            <a href="">Menu</a>
+            <a href="">Zamówienia</a>
+        </div>
+        <div class="topnav-right">
+            <a href="/WWW/profile/profile.html" id="profileButton">Profil</a>
+            <a href="javascript:logout();" id="logoutButton">Wyloguj się</a>
+            <a href="/WWW/login/login.html" id="loginButton">Zaloguj się</a>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="search-div">
+            <input type="text" placeholder="Nazwa Użytkownika" id="search-input">
+            <button id="search-button" onclick="search_user();">Wyszukaj</button>
+        </div>
+        <div class="container" id="container">
+        </div>
+    </div>
+   
+    <script src="/WWW/JavaScript/admin/get_users.js"></script>
+    <script src="/WWW/JavaScript/check_session.js"> </script>
+</body>
+</html>

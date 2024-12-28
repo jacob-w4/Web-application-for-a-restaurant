@@ -190,6 +190,16 @@ def add_to_menu():
     database.create_menu(data['name'], data['price'], data['description'], data['img_url'])
     return 'success'
 
+@app.route('/get_orders', methods=['GET'])
+def get_orders():
+    data = database.get_orders()
+    return data
+
+@app.route('/change_order_status', methods=['PUT'])
+def change_order_status():
+    data = request.json
+    database.change_status(data['status'],data['id'])
+    return 'success'
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=2500)

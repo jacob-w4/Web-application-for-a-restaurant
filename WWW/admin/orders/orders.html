@@ -20,16 +20,26 @@
         </div>
     </div>
 
-    <div class="section">
-        <div class="search-div">
-            <input type="text" placeholder="Nazwa Użytkownika" id="search-input">
-            <button id="search-button" onclick="search_user();">Wyszukaj</button>
-        </div>
-        <div class="container" id="container">
-        </div>
-    </div>
-   
-    <script src="/WWW/JavaScript/admin/get_users.js"></script>
+<div class="container">
+    <h1>Lista Zamówień</h1>
+    <table id="orders-table">
+        <thead>
+            <tr>
+                <th>Użytkownik</th>
+                <th>Status</th>
+                <th>Data Rozpoczęcia</th>
+                <th>Adres</th>
+                <th>Numer Telefonu</th>
+                <th>Produkty</th>
+                <th>Całkowita Cena</th>
+                <th>Akcje</th> 
+            </tr>
+        </thead>
+        <tbody id="table">
+        </tbody>
+    </table>
+</div>
+    <script src="/WWW/JavaScript/admin/get_orders.js"></script>
     <script src="/WWW/JavaScript/check_session.js"> </script>
 </body>
 </html>

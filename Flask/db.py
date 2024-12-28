@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+from decimal import Decimal
 import mysql.connector
 import json
 
@@ -125,7 +126,7 @@ def make_order(username, items, city, street, apartment_num, phone):
         user_id = cursor.fetchone()[0]
 
         start_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        status = "In progress"
+        status = "W trakcie"
 
         query = "INSERT INTO `lokal-kebab`.Orders (status, Users_user_id, startDate) VALUES (%s, %s, %s)"
         cursor.execute(query, (status, user_id, start_date)) 
@@ -258,5 +259,88 @@ def create_menu(name, price, description, img_url):
         cursor.close()
         database.close()
 
+def get_orders():
+    database = connect()
+    cursor = database.cursor(dictionary=True)
 
+    cursor.execute("USE `lokal-kebab`")
 
+    status = "W trakcie"
+
+    query ="""SELECT o.order_id, o.status, o.startDate, o.endDate, o.discount_value, u.username, GROUP_CONCAT( DISTINCT u.city, ' ul. ', u.street, '/', u.apartment_num) AS address, u.phone, GROUP_CONCAT(m.name) AS items, SUM(m.price) AS total_price
+            FROM Orders o
+            JOIN Users u ON o.Users_user_id = u.user_id
+            JOIN Order_menu om ON o.order_id = om.order_id
+            JOIN Menu m ON om.menu_id = m.menu_id
+            GROUP BY o.order_id, o.status, o.startDate, o.endDate, o.discount_value, u.username, u.city, u.street, u.apartment_num, u.phone
+            HAVING o.status = %s
+            ORDER BY o.startDate ASC; """
+    cursor.execute(query, (status,))
+    orders = cursor.fetchall()
+
+    # Przetwarzanie wyników (zamiana timedelta na string oraz Decimal na float)
+    for order in orders:
+        for key, value in order.items():
+            if isinstance(value, timedelta): # Jeśli wartość to timedelta
+                order[key] = str(value)      # Zamień na string w formacie "HH:MM:SS"
+            if isinstance(value, Decimal):   # Jeśli wartość to Decimal
+                order[key] = float(value)    # Zamień na float
+
+    orders = json.dumps(orders)
+
+    cursor.close()
+    database.close()
+
+    return orders
+
+def change_status(status, order_id):
+    database = connect()
+    cursor = database.cursor()
+
+    end_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    query = "UPDATE `lokal-kebab`.Orders SET status = %s, endDate = %s WHERE order_id = %s"
+    cursor.execute(query, (status, end_date, order_id))
+    database.commit()
+
+    if check_temp(order_id) == 'YES':
+        delete_temp(order_id)
+
+    cursor.close()
+    database.close()
+
+def check_temp(order_id):
+    database = connect()
+    cursor = database.cursor()  
+    cursor.execute("USE `lokal-kebab`")
+
+    query = "SELECT u.is_temp FROM Orders o JOIN Users u ON o.Users_user_id = u.user_id WHERE o.order_id  = %s"
+    cursor.execute(query, (order_id,))
+    temp = cursor.fetchone()[0]
+
+    cursor.close()
+    database.close()
+
+    return temp
+
+def delete_temp(order_id):
+    database = connect()
+    cursor = database.cursor() 
+    cursor.execute("USE `lokal-kebab`") 
+
+    query = "SELECT u.user_id FROM Users u JOIN Orders o ON u.user_id = o.Users_user_id WHERE o.order_id = %s"
+    cursor.execute(query, (order_id,))
+    user_id = cursor.fetchone()[0]
+
+    # Usuwa z tablicy Orders
+    query = "DELETE FROM Orders WHERE order_id = %s"
+    cursor.execute(query, (order_id,))
+
+    # Usuwa z tablicy Users
+    query = "DELETE FROM Users WHERE user_id = %s"
+    cursor.execute(query, (user_id,))
+
+    database.commit()
+
+    cursor.close()
+    database.close()

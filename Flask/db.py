@@ -104,47 +104,46 @@ def create_user(username, password, email, phone):
     return 'success'
 
 def make_order(username, items, city, street, apartment_num, phone):
-    try:
+    if username == None:
+        username = create_guest(city, street, apartment_num, phone)
         if username == None:
-            username = create_guest(city, street, apartment_num, phone)
-            if username == None:
-                return 'failed'
+            return 'failed'
 
-        database = connect()
-        cursor = database.cursor()
+    database = connect()
+    cursor = database.cursor()
 
-        query = "SELECT menu_id FROM `lokal-kebab`.Menu WHERE name = %s"
-        menu_ids = []
-        for item in items:
-            cursor.execute(query, (item["name"],))
-            result = cursor.fetchone()  # Pobiera jeden wynik
-            if result:  # Sprawdza, czy wynik istnieje
-                menu_ids.append(result[0])  # Dodaje menu_id (pierwsza kolumna w wyniku zapytania)
+    query = "SELECT menu_id FROM `lokal-kebab`.Menu WHERE name = %s"
+    menu_ids = []
+    quantity = []
 
-        query = "SELECT user_id FROM `lokal-kebab`.Users WHERE username = %s"
-        cursor.execute(query, (username,)) 
-        user_id = cursor.fetchone()[0]
+    for item in items:
+        cursor.execute(query, (item["name"],))
+        result = cursor.fetchone()  # Pobiera jeden wynik
+        if result:  # Sprawdza, czy wynik istnieje
+            menu_ids.append(result[0])  # Dodaje menu_id (pierwsza kolumna w wyniku zapytania)
+            quantity.append(item["quantity"]) # dodaje ilość
 
-        start_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        status = "W trakcie"
+    query = "SELECT user_id FROM `lokal-kebab`.Users WHERE username = %s"
+    cursor.execute(query, (username,)) 
+    user_id = cursor.fetchone()[0]
 
-        query = "INSERT INTO `lokal-kebab`.Orders (status, Users_user_id, startDate) VALUES (%s, %s, %s)"
-        cursor.execute(query, (status, user_id, start_date)) 
-        order_id = cursor.lastrowid
+    start_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    status = "W trakcie"
 
-        query = "INSERT INTO `lokal-kebab`.Order_menu (order_id, menu_id) VALUES (%s, %s)"
-        for menu_id in menu_ids:
-            cursor.execute(query, (order_id, menu_id)) 
+    query = "INSERT INTO `lokal-kebab`.Orders (status, Users_user_id, startDate) VALUES (%s, %s, %s)"
+    cursor.execute(query, (status, user_id, start_date)) 
+    order_id = cursor.lastrowid
 
-        database.commit()
+    query = "INSERT INTO `lokal-kebab`.Order_menu (order_id, menu_id, quantity) VALUES (%s, %s, %s)"
+    for i in range(len(menu_ids)):
+        cursor.execute(query, (order_id, menu_ids[i], quantity[i])) 
 
-        cursor.close()
-        database.close()
+    database.commit()
 
-        return 'success'
-    except:
-        print("Cannot make an order")
-        return 'failed'
+    cursor.close()
+    database.close()
+
+    return 'success'
 
 def create_guest(city, street, apartment_num, phone):
     try:
@@ -267,7 +266,7 @@ def get_orders():
 
     status = "W trakcie"
 
-    query ="""SELECT o.order_id, o.status, o.startDate, o.endDate, o.discount_value, u.username, GROUP_CONCAT( DISTINCT u.city, ' ul. ', u.street, '/', u.apartment_num) AS address, u.phone, GROUP_CONCAT(m.name) AS items, SUM(m.price) AS total_price
+    query ="""SELECT o.order_id, o.status, o.startDate, o.endDate, o.discount_value, u.username, GROUP_CONCAT( DISTINCT u.city, ' ul. ', u.street, '/', u.apartment_num) AS address, u.phone, GROUP_CONCAT(om.quantity, 'x ', m.name) AS items, SUM(m.price) AS total_price
             FROM Orders o
             JOIN Users u ON o.Users_user_id = u.user_id
             JOIN Order_menu om ON o.order_id = om.order_id

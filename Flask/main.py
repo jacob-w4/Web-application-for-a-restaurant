@@ -132,6 +132,15 @@ def get_user():
     else:
         return jsonify({'status': 'not_logged_in'})
 
+@app.route('/profile/order_history' , methods=['GET'])
+def get_order_history():
+    if 'username' in session:
+        user = session['username']
+        data = database.get_order_history(user)
+        return data
+    else:
+        return jsonify({'status': 'not_logged_in'})
+
 @app.route('/user', methods=['PUT'])
 def change_user_data():
     data = request.json

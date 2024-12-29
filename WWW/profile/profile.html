@@ -66,9 +66,17 @@
                     <button type="button" id="phone-button">✓</button>
                 </div>
             </div>
+            <div class="item">
+                <button type="button" id="history" onclick="redirect()">Zamówienia</button>
+            </div>
         </form>
     </div>
     <script src="/WWW/JavaScript/check_session.js"></script>
     <script src="/WWW/JavaScript/get_user_data.js"></script>
+    <script>
+        function redirect() { 
+            location.href = '/WWW/order-history/history.html';
+        }
+    </script>
 </body>
 </html>

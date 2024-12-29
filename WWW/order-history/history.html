@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="topnav">
+        <div class="topnav-left">
+            <img src="/WWW/home/res/KEBAB.png" alt="Kebab Logo" id="kebab-img">
+            <a href="/WWW/home/home.html" id="logo">Kabge Kebab</a>
+            <a href="/WWW/about-us/about.html">O nas</a>
+            <a href="/WWW/menu/menu.html">Menu</a>
+            <a href="/WWW/contact/contact.html">Kontakt</a>
+        </div>
+        <div class="topnav-right">
+            <a href="/WWW/profile/profile.html" id="profileButton">Profil</a>
+            <a href="javascript:logout();" id="logoutButton">Wyloguj się</a>
+            <a href="/WWW/login/login.html" id="loginButton">Zaloguj się</a>
+            <a href="/WWW/order/order.html">Zamówienie</a>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Historia Zamówień</h1>
+        <table id="orders-table">
+            <thead>
+                <tr>
+                    <th>Zamówienie</th>
+                    <th>Status</th>
+                    <th>Data Rozpoczęcia</th>
+                    <th>Data Zakończenia</th>
+                    <th>Produkty</th>
+                    <th>Całkowita Cena</th>
+                </tr>
+            </thead>
+            <tbody id="table">
+            </tbody>
+        </table>
+    </div>
+    <script src="/WWW/JavaScript/order_history.js"></script>
+    <script src="/WWW/JavaScript/check_session.js"></script>
+</body>
+</html>

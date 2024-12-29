@@ -266,7 +266,7 @@ def get_orders():
 
     status = "W trakcie"
 
-    query ="""SELECT o.order_id, o.status, o.startDate, o.endDate, o.discount_value, u.username, GROUP_CONCAT( DISTINCT u.city, ' ul. ', u.street, '/', u.apartment_num) AS address, u.phone, GROUP_CONCAT(om.quantity, 'x ', m.name) AS items, SUM(m.price) AS total_price
+    query ="""SELECT o.order_id, o.status, o.startDate, o.endDate, o.discount_value, u.username, GROUP_CONCAT( DISTINCT u.city, ' ul. ', u.street, '/', u.apartment_num) AS address, u.phone, GROUP_CONCAT(om.quantity, 'x ', m.name) AS items, SUM(m.price * om.quantity) AS total_price
             FROM Orders o
             JOIN Users u ON o.Users_user_id = u.user_id
             JOIN Order_menu om ON o.order_id = om.order_id
@@ -280,7 +280,7 @@ def get_orders():
     # Przetwarzanie wyników (zamiana timedelta na string oraz Decimal na float)
     for order in orders:
         for key, value in order.items():
-            if isinstance(value, timedelta): # Jeśli wartość to timedelta
+            if isinstance(value, datetime): # Jeśli wartość to timedelta
                 order[key] = str(value)      # Zamień na string w formacie "HH:MM:SS"
             if isinstance(value, Decimal):   # Jeśli wartość to Decimal
                 order[key] = float(value)    # Zamień na float
@@ -343,3 +343,42 @@ def delete_temp(order_id):
 
     cursor.close()
     database.close()
+
+def get_order_history(username):
+    database = connect()
+    cursor = database.cursor(dictionary=True) 
+    cursor.execute("USE `lokal-kebab`") 
+
+    query = """SELECT o.status, o.startDate, o.endDate, GROUP_CONCAT(om.quantity, 'x ', m.name) AS items, SUM(m.price * om.quantity) AS total_price
+            FROM Orders o
+            JOIN Users u ON o.Users_user_id = u.user_id
+            JOIN Order_menu om ON o.order_id = om.order_id
+            JOIN Menu m ON om.menu_id = m.menu_id
+            WHERE username = %s
+            GROUP BY o.status, o.startDate, o.endDate, u.username
+            ORDER BY o.startDate DESC;"""
+    
+    cursor.execute(query, (username,))
+    data = cursor.fetchall()
+
+     # Przetwarzanie wyników (zamiana timedelta na string oraz Decimal na float)
+    for order in data:
+        for key, value in order.items():
+            if isinstance(value, datetime): # Jeśli wartość to timedelta
+                order[key] = str(value)      # Zamień na string w formacie "HH:MM:SS"
+            if isinstance(value, Decimal):   # Jeśli wartość to Decimal
+                order[key] = float(value)    # Zamień na float
+
+
+    # Dodanie kolumny - numer zamówienia
+    for index, row in enumerate(data, start=1):
+        row["row_num"] = index
+        if row["endDate"] == None: # Zamiana Null na '-'
+            row["endDate"] = '-'
+
+    data = json.dumps(data)
+
+    cursor.close()
+    database.close()
+
+    return data

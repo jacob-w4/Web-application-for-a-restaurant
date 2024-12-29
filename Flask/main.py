@@ -85,7 +85,7 @@ def register():
         return jsonify({'status': 'success',
                         'details': 'Pomyślnie stworzono konto'})
 
-@app.route('/check_session', methods=['GET'])
+@app.route('/session', methods=['GET'])
 def check_session():
     # Sprawdzamy, czy użytkownik jest zalogowany
     print(session)
@@ -95,12 +95,35 @@ def check_session():
     else:
         return jsonify({'status': 'not_logged_in'})
     
-@app.route('/get_menu', methods=['GET'])
+@app.route('/menu', methods=['GET'])
 def get_menu():
     data = database.get_menu()
     return data
 
-@app.route('/get_user_profile', methods=['GET'])
+@app.route('/menu', methods=['PUT'])
+def change_menu():
+    data = request.json
+
+    name = data.get('menu_name')
+    key = data.get('field')
+    value = data.get('value')
+   
+    database.change_menu(key, value, name)
+    return "200 Dane zostały zmienione"
+
+@app.route('/menu', methods=['DELETE'])
+def delete_menu():
+    data = request.json
+    database.delete_menu_from_db(data['menu'])
+    return 'success'
+
+@app.route('/menu', methods=['POST'])
+def add_to_menu():
+    data = request.json
+    database.create_menu(data['name'], data['price'], data['description'], data['img_url'])
+    return 'success'
+
+@app.route('/profile', methods=['GET'])
 def get_user():
     if 'username' in session:
         user = session['username']
@@ -109,7 +132,7 @@ def get_user():
     else:
         return jsonify({'status': 'not_logged_in'})
 
-@app.route('/change_user_data', methods=['PUT'])
+@app.route('/user', methods=['PUT'])
 def change_user_data():
     data = request.json
 
@@ -120,7 +143,13 @@ def change_user_data():
     database.change_user_data(key, value, username)
     return "200 Dane zostały zmienione"
 
-@app.route('/make_order', methods=['POST'])
+@app.route('/user', methods=['DELETE'])
+def delete_user():
+    data = request.json
+    database.delete_user_from_db(data['user'])
+    return 'success'
+
+@app.route('/order', methods=['POST'])
 def make_order():
     data = request.get_json()
 
@@ -135,18 +164,18 @@ def make_order():
         status = database.make_order(None, data['items'], city, street, apartment_num, phone)
     return jsonify({'status' : status})
 
-@app.route('/get_users', methods=['GET'])
+@app.route('/order', methods=['PUT'])
+def change_order_status():
+    data = request.json
+    database.change_status(data['status'],data['id'])
+    return 'success'
+
+@app.route('/users', methods=['GET'])
 def get_users():
     data = database.get_users_data()
     return data
 
-@app.route('/delete_user', methods=['DELETE'])
-def delete_user():
-    data = request.json
-    database.delete_user_from_db(data['user'])
-    return 'success'
-
-@app.route('/search_user_data', methods=['GET'])
+@app.route('/search/user', methods=['GET'])
 def search_user():
     data = request.args.get('user')
     if data == '':
@@ -156,18 +185,7 @@ def search_user():
         user = database.get_user_data(data)
         return user
 
-@app.route('/change_menu', methods=['PUT'])
-def change_menu():
-    data = request.json
-
-    name = data.get('menu_name')
-    key = data.get('field')
-    value = data.get('value')
-   
-    database.change_menu(key, value, name)
-    return "200 Dane zostały zmienione"
-
-@app.route('/search_menu', methods=['GET'])
+@app.route('/search/menu', methods=['GET'])
 def search_menu():
     data = request.args.get('menu')
     print(data)
@@ -178,28 +196,11 @@ def search_menu():
         pos = database.get_position_from_menu(data)
         return pos
 
-@app.route('/delete_from_menu', methods=['DELETE'])
-def delete_menu():
-    data = request.json
-    database.delete_menu_from_db(data['menu'])
-    return 'success'
-
-@app.route('/add_to_menu', methods=['POST'])
-def add_to_menu():
-    data = request.json
-    database.create_menu(data['name'], data['price'], data['description'], data['img_url'])
-    return 'success'
-
-@app.route('/get_orders', methods=['GET'])
+@app.route('/orders', methods=['GET'])
 def get_orders():
     data = database.get_orders()
     return data
 
-@app.route('/change_order_status', methods=['PUT'])
-def change_order_status():
-    data = request.json
-    database.change_status(data['status'],data['id'])
-    return 'success'
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=2500)

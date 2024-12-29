@@ -1,5 +1,5 @@
 function get_user_data() {
-    fetch("http://localhost:2500/get_user_profile", {method: "GET", credentials: 'include'})
+    fetch("http://localhost:2500/profile", {method: "GET", credentials: 'include'})
     .then(response => response.json()) 
     .then(data => {
         if (data.status == 'not_logged_in') {
@@ -28,7 +28,7 @@ function make_order() {
         'phone' : phone
         }
 
-    fetch("http://localhost:2500/make_order", {
+    fetch("http://localhost:2500/order", {
         method: "POST",
         credentials: 'include',
         headers: {

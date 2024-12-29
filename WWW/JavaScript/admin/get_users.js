@@ -1,5 +1,5 @@
 function get_users() {
-    fetch("http://localhost:2500/get_users", {method: "GET"})
+    fetch("http://localhost:2500/users", {method: "GET"})
     .then(response => response.json()) 
     .then(data => {
         display_users(data)
@@ -85,7 +85,7 @@ function change_data(elementID, dataID, username) {
         value : data
     };
 
-    fetch("http://localhost:2500/change_user_data", {
+    fetch("http://localhost:2500/user", {
         method: "PUT", 
         credentials: 'include', 
         headers: {
@@ -99,7 +99,7 @@ function delete_account(username) {
     const data_to_send = {
         user : username
     }
-    fetch("http://localhost:2500/delete_user", {
+    fetch("http://localhost:2500/user", {
         method: "DELETE", 
         credentials: 'include', 
         headers: {
@@ -113,7 +113,7 @@ function search_user() {
     const user = document.getElementById('search-input').value
 
     // Tworzenie URL z parametrami
-    const url = `http://localhost:2500/search_user_data?user=${encodeURIComponent(user)}`;
+    const url = `http://localhost:2500/search/user?user=${encodeURIComponent(user)}`;
 
 
     fetch(url, {

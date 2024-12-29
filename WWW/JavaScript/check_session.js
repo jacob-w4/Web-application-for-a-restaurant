@@ -1,5 +1,5 @@
 function checkSession() {
-    fetch("http://localhost:2500/check_session", {method: "GET", credentials: 'include'})  // Wysyłamy zapytanie do Flaskowego endpointu
+    fetch("http://localhost:2500/session", {method: "GET", credentials: 'include'})  // Wysyłamy zapytanie do Flaskowego endpointu
         .then(response => response.json())
         .then(data => {
             console.log(data);

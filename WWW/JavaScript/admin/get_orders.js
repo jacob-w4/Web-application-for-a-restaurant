@@ -1,5 +1,5 @@
 function get_orders() {
-    fetch("http://localhost:2500/get_orders", {method: "GET"})
+    fetch("http://localhost:2500/orders", {method: "GET"})
     .then(response => response.json()) 
     .then(data => {
         display_orders(data)
@@ -40,7 +40,7 @@ function cancel(order_id) {
         'id' : order_id
     }
 
-    fetch("http://localhost:2500/change_order_status", {
+    fetch("http://localhost:2500/order", {
         method: "PUT", 
         credentials: 'include', 
         headers: {
@@ -56,7 +56,7 @@ function finish(order_id) {
         'id' : order_id
     }
 
-    fetch("http://localhost:2500/change_order_status", {
+    fetch("http://localhost:2500/order", {
         method: "PUT", 
         credentials: 'include', 
         headers: {

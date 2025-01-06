@@ -1,5 +1,5 @@
 function checkSession() {
-    fetch("http://localhost:2500/session", {method: "GET", credentials: 'include'})  // Wysyłamy zapytanie do Flaskowego endpointu
+    fetch("http://jakubplewa.pl/api/session", {method: "GET", credentials: 'include'})  // Wysyłamy zapytanie do Flaskowego endpointu
         .then(response => response.json())
         .then(data => {
             console.log(data);
@@ -22,12 +22,12 @@ function checkSession() {
 window.onload = checkSession;
 
 function logout() {
-    fetch("http://localhost:2500/logout", {method: "GET", credentials: 'include'})
+    fetch("http://jakubplewa.pl/api/logout", {method: "GET", credentials: 'include'})
     .then(response => response.json())
     .then(data => {
         console.log(data);
         if (data.status == 'logged_out') {
-            window.location = "http://127.0.0.1:2501/WWW/home/home.html"
+            window.location = "http://jakubplewa.pl/home/home.html"
         }   
     });
 }

@@ -1,5 +1,5 @@
 function get_menu() {
-    fetch("http://localhost:2500/menu", {method: "GET"})
+    fetch("http://jakubplewa.pl/api/menu", {method: "GET"})
     .then(response => response.json()) 
     .then(data => {
         display_menu(data)
@@ -83,7 +83,7 @@ function change_data(elementID, dataID, name) {
         value : data
     };
 
-    fetch("http://localhost:2500/menu", {
+    fetch("http://jakubplewa.pl/api/menu", {
         method: "PUT", 
         credentials: 'include', 
         headers: {
@@ -98,7 +98,7 @@ function search_menu() {
     const menu = document.getElementById('search-input').value
 
     // Tworzenie URL z parametrami
-    const url = `http://localhost:2500/search/menu?menu=${encodeURIComponent(menu)}`;
+    const url = `http://jakubplewa.pl/api/search/menu?menu=${encodeURIComponent(menu)}`;
 
 
     fetch(url, {
@@ -123,7 +123,7 @@ function delete_menu(name) {
     const data_to_send = {
         'menu' : name
     }
-    fetch("http://localhost:2500/menu", {
+    fetch("http://jakubplewa.pl/api/menu", {
         method: "DELETE", 
         credentials: 'include', 
         headers: {
@@ -147,7 +147,7 @@ function add_menu() {
         'img_url' : url
     }
 
-    fetch("http://localhost:2500/menu", {
+    fetch("http://jakubplewa.pl/api/menu", {
         method: "POST", 
         credentials: 'include', 
         headers: {

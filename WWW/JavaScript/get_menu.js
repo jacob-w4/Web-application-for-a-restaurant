@@ -1,5 +1,5 @@
 function get_menu() {
-    fetch("http://localhost:2500/menu", {method: "GET"})
+    fetch("http://jakubplewa.pl/api/menu", {method: "GET"})
     .then(response => response.json()) 
     .then(data => {
         const menuContainer = document.getElementById("menu-container"); // Kontener na dane menu

@@ -17,7 +17,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
 
-  background-image: url("/WWW/menu/res/Lula_kebab.jpg");
+  background-image: url("res/Lula_kebab.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;

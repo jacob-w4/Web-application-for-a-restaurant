@@ -1,5 +1,5 @@
 function get_users() {
-    fetch("http://localhost:2500/users", {method: "GET"})
+    fetch("http://jakubplewa.pl/api/users", {method: "GET"})
     .then(response => response.json()) 
     .then(data => {
         display_users(data)
@@ -85,7 +85,7 @@ function change_data(elementID, dataID, username) {
         value : data
     };
 
-    fetch("http://localhost:2500/user", {
+    fetch("http://jakubplewa.pl/api/user", {
         method: "PUT", 
         credentials: 'include', 
         headers: {
@@ -99,7 +99,7 @@ function delete_account(username) {
     const data_to_send = {
         user : username
     }
-    fetch("http://localhost:2500/user", {
+    fetch("http://jakubplewa.pl/api/user", {
         method: "DELETE", 
         credentials: 'include', 
         headers: {
@@ -113,7 +113,7 @@ function search_user() {
     const user = document.getElementById('search-input').value
 
     // Tworzenie URL z parametrami
-    const url = `http://localhost:2500/search/user?user=${encodeURIComponent(user)}`;
+    const url = `http://jakubplewa.pl/api/search/user?user=${encodeURIComponent(user)}`;
 
 
     fetch(url, {

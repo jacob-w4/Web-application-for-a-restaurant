@@ -6,20 +6,20 @@
   align-items: center;
   border-bottom: 2px solid black;
   height: 75px;
-  padding: 0 1rem;  
+  padding: 0 1rem;
 }
 
 body {
- margin: 0 auto;
- background-image: url("/WWW/about-us/res/kebab-lokal.jpg");
- background-repeat: no-repeat;
- background-position: center;
- background-attachment: fixed;
- background-size: cover;
- min-height: 100vh;
+  margin: 0 auto;
+  background-image: url("res/kebab-lokal.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
 
- display: flex;
- flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .topnav a {
@@ -64,8 +64,8 @@ body {
 
 
 .section {
-  display: flex;     
-  justify-content: left; 
+  display: flex;
+  justify-content: left;
   width: 100%;
   flex-grow: 1;
 }
@@ -73,7 +73,7 @@ body {
 .container {
   display: flex;
   flex-direction: column;
- 
+
   max-width: 40vh;
 
   background-color: rgba(255, 255, 255, 0.822);
@@ -81,7 +81,7 @@ body {
   border-radius: 8px;
   padding: 4vh 2vw;
 
-  word-wrap: break-word; 
+  word-wrap: break-word;
   overflow-y: auto;
 }
 
@@ -118,17 +118,16 @@ p {
 
 
 @media (max-width: 980px) {
-  .section {   
-    justify-content: center;    
+  .section {
+    justify-content: center;
     align-items: center;
   }
 
   .header {
     font-size: 4.5rem;
   }
-  
+
   p {
     font-size: 1.3rem;
   }
 }
-

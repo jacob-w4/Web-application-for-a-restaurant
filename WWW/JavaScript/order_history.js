@@ -1,5 +1,5 @@
 function get_history() {
-    fetch("http://localhost:2500//profile/order_history", {method: "GET" , credentials: 'include'})
+    fetch("http://jakubplewa.pl/api/profile/order_history", {method: "GET" , credentials: 'include'})
     .then(response => response.json()) 
     .then(data => {
         display_orders(data)

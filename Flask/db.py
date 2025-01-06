@@ -112,6 +112,9 @@ def make_order(username, items, city, street, apartment_num, phone):
     database = connect()
     cursor = database.cursor()
 
+    query = "UPDATE `lokal-kebab`.Users SET city=%s, street=%s, apartment_num=%s, phone=%s WHERE username=%s"
+    cursor.execute(query, (city, street, apartment_num, phone, username))
+
     query = "SELECT menu_id FROM `lokal-kebab`.Menu WHERE name = %s"
     menu_ids = []
     quantity = []

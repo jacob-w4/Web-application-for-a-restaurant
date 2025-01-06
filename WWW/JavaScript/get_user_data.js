@@ -1,5 +1,5 @@
 function get_user_data() {
-    fetch("http://localhost:2500/profile", {method: "GET", credentials: 'include'})
+    fetch("http://jakubplewa.pl/api/profile", {method: "GET", credentials: 'include'})
     .then(response => response.json()) 
     .then(data => {
         document.getElementById("password-button").onclick = () => change_data('password', data.username)
@@ -28,7 +28,7 @@ function change_data(dataID, username) {
         value : data
     };
 
-    fetch("http://localhost:2500/user", {
+    fetch("api/user", {
         method: "PUT", 
         credentials: 'include', 
         headers: {

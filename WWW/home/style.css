@@ -11,7 +11,7 @@
 
 body {
     margin: 0 0;
-    background-image: url("/WWW/home/res/kebab-glowne.jpg");
+    background-image: url("res/kebab-glowne.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;

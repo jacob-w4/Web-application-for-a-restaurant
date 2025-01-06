@@ -13,7 +13,7 @@ function register() {
         'phone': phone
     };
 
-    fetch("http://localhost:2500/register", {
+    fetch("http://jakubplewa.pl/api/register", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ function register() {
         } 
         if (result.status === 'success') {
             console.log(result)
-            window.location = "http://127.0.0.1:2501/WWW/login/login.html";
+            window.location = "http://jakubplewa.pl/login/login.html";
         }
     })
     .catch(error => {

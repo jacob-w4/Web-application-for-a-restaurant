@@ -10,25 +10,25 @@ app.config['SECRET_KEY'] = 'hadhdhgfvcjrtfj'
 app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
 
 # Obsługa róznych domen/portów
-CORS(app, origins=["http://127.0.0.1:2501"], supports_credentials=True)
-#CORS(app, supports_credentials=True, origins=["http://jakubplewa.pl"])
+#CORS(app, origins=["http://127.0.0.1:2501"], supports_credentials=True)
+CORS(app, supports_credentials=True, origins=["http://jakubplewa.pl"])
 
 # Ustawienie plików cookies - lokalnie
-app.config['SESSION_COOKIE_SAMESITE'] = 'None'
-app.config['SESSION_COOKIE_SECURE'] = True # Wymagane dla SameSite=None
-app.config['SESSION_COOKIE_HTTPONLY'] = True
-
-# Ustawienie plików cookies - serwer Linux
-#app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-#app.config['SESSION_COOKIE_SECURE'] = False
+#app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+#app.config['SESSION_COOKIE_SECURE'] = True # Wymagane dla SameSite=None
 #app.config['SESSION_COOKIE_HTTPONLY'] = True
 
+# Ustawienie plików cookies - serwer Linux
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = False
+app.config['SESSION_COOKIE_HTTPONLY'] = True
 
-local_url = "http://127.0.0.1:2501/WWW/"
-#local_url = "http://jakubplewa.pl:80/"
+
+#local_url = "http://127.0.0.1:2501/WWW/"
+local_url = "http://jakubplewa.pl:80/"
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/api/login", methods=["POST"])
 def login():
     # Pobieranie danych od klienta
     username = request.form['username']
@@ -56,7 +56,7 @@ def login():
         print("400: Podaj nazwe uzytkownika oraz haslo")
         return redirect(location=f"{local_url}login/login.html")
     
-@app.route("/logout", methods=["GET"])
+@app.route("/api/logout", methods=["GET"])
 def logout():
     session.pop('username')
     if 'username' in session:
@@ -64,7 +64,7 @@ def logout():
     else:
         return jsonify({'status': 'logged_out'})
 
-@app.route("/register", methods=["POST"])
+@app.route("/api/register", methods=["POST"])
 def register():
     # Pobieranie danych od klienta
     data = request.json
@@ -85,7 +85,7 @@ def register():
         return jsonify({'status': 'success',
                         'details': 'Pomyślnie stworzono konto'})
 
-@app.route('/session', methods=['GET'])
+@app.route('/api/session', methods=['GET'])
 def check_session():
     # Sprawdzamy, czy użytkownik jest zalogowany
     print(session)
@@ -95,12 +95,12 @@ def check_session():
     else:
         return jsonify({'status': 'not_logged_in'})
     
-@app.route('/menu', methods=['GET'])
+@app.route('/api/menu', methods=['GET'])
 def get_menu():
     data = database.get_menu()
     return data
 
-@app.route('/menu', methods=['PUT'])
+@app.route('/api/menu', methods=['PUT'])
 def change_menu():
     data = request.json
 
@@ -111,19 +111,19 @@ def change_menu():
     database.change_menu(key, value, name)
     return "200 Dane zostały zmienione"
 
-@app.route('/menu', methods=['DELETE'])
+@app.route('/api/menu', methods=['DELETE'])
 def delete_menu():
     data = request.json
     database.delete_menu_from_db(data['menu'])
     return 'success'
 
-@app.route('/menu', methods=['POST'])
+@app.route('/api/menu', methods=['POST'])
 def add_to_menu():
     data = request.json
     database.create_menu(data['name'], data['price'], data['description'], data['img_url'])
     return 'success'
 
-@app.route('/profile', methods=['GET'])
+@app.route('/api/profile', methods=['GET'])
 def get_user():
     if 'username' in session:
         user = session['username']
@@ -132,7 +132,7 @@ def get_user():
     else:
         return jsonify({'status': 'not_logged_in'})
 
-@app.route('/profile/order_history' , methods=['GET'])
+@app.route('/api/profile/order_history' , methods=['GET'])
 def get_order_history():
     if 'username' in session:
         user = session['username']
@@ -141,7 +141,7 @@ def get_order_history():
     else:
         return jsonify({'status': 'not_logged_in'})
 
-@app.route('/user', methods=['PUT'])
+@app.route('/api/user', methods=['PUT'])
 def change_user_data():
     data = request.json
 
@@ -152,13 +152,13 @@ def change_user_data():
     database.change_user_data(key, value, username)
     return "200 Dane zostały zmienione"
 
-@app.route('/user', methods=['DELETE'])
+@app.route('/api/user', methods=['DELETE'])
 def delete_user():
     data = request.json
     database.delete_user_from_db(data['user'])
     return 'success'
 
-@app.route('/order', methods=['POST'])
+@app.route('/api/order', methods=['POST'])
 def make_order():
     data = request.get_json()
 
@@ -173,18 +173,18 @@ def make_order():
         status = database.make_order(None, data['items'], city, street, apartment_num, phone)
     return jsonify({'status' : status})
 
-@app.route('/order', methods=['PUT'])
+@app.route('/api/order', methods=['PUT'])
 def change_order_status():
     data = request.json
     database.change_status(data['status'],data['id'])
     return 'success'
 
-@app.route('/users', methods=['GET'])
+@app.route('/api/users', methods=['GET'])
 def get_users():
     data = database.get_users_data()
     return data
 
-@app.route('/search/user', methods=['GET'])
+@app.route('/api/search/user', methods=['GET'])
 def search_user():
     data = request.args.get('user')
     if data == '':
@@ -194,7 +194,7 @@ def search_user():
         user = database.get_user_data(data)
         return user
 
-@app.route('/search/menu', methods=['GET'])
+@app.route('/api/search/menu', methods=['GET'])
 def search_menu():
     data = request.args.get('menu')
     print(data)
@@ -205,7 +205,7 @@ def search_menu():
         pos = database.get_position_from_menu(data)
         return pos
 
-@app.route('/orders', methods=['GET'])
+@app.route('/api/orders', methods=['GET'])
 def get_orders():
     data = database.get_orders()
     return data

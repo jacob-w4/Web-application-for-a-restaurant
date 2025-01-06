@@ -109,6 +109,9 @@ def make_order(username, items, city, street, apartment_num, phone):
         if username == None:
             return 'failed'
 
+    query = "UPDATE `lokal-kebab`.Users SET city=%s, street=%s, apartment_num=%s, phone=%s WHERE username=%s"
+    cursor.execute(query, (city, street, apartment_num, phone, username))
+
     database = connect()
     cursor = database.cursor()
 

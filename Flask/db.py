@@ -187,10 +187,15 @@ def delete_user_from_db(username):
     database = connect()
     cursor = database.cursor()
 
-    print(username)
-
-    query = "DELETE FROM `lokal-kebab`.Users WHERE username = %s"
+    query = "SELECT user_id FROM `lokal-kebab`.Users WHERE username = %s"
     cursor.execute(query, (username,))
+
+    user_id = cursor.fetchone()[0]
+    
+    query = "DELETE FROM `lokal-kebab`.Orders WHERE user_id = %s"
+    cursor.execute(query, (user_id,))
+    query = "DELETE FROM `lokal-kebab`.Users WHERE user_id = %s"
+    cursor.execute(query, (user_id,))
 
     database.commit()
     cursor.close()

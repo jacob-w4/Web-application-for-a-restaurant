@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
     <link rel="stylesheet" href="/menu/style.css">
 </head>
+
 <body>
     <div class="topnav">
         <div class="topnav-left">
-            <img src="/home/res/KEBAB.png" alt="Kebab Logo" id="kebab-img">
-            <a href="/home/home.html" id="logo">Kabge Kebab</a>
-            <a href="/about-us/about.html">O nas</a>
-            <a href="/menu/menu.html">Menu</a>
-            <a href="/contact/contact.html">Kontakt</a>
+            <img src="/WWW/home/res/KEBAB.png" alt="Kebab Logo" id="kebab-img">
+            <a href="/WWW/home/home.html" id="logo">Kabge Kebab</a>
+            <a href="/WWW/about-us/about.html">O nas</a>
+            <a href="/WWW/menu/menu.html">Menu</a>
+            <a href="/WWW/contact/contact.html">Kontakt</a>
         </div>
         <div class="topnav-right">
-            <a href="/profile/profile.html" id="profileButton">Profil</a>
+            <a href="/WWW/profile/profile.html" id="profileButton">Profil</a>
             <a href="javascript:logout();" id="logoutButton">Wyloguj się</a>
-            <a href="/login/login.html" id="loginButton">Zaloguj się</a>
-            <a href="/order/order.html">Zamówienie</a>
+            <a href="/WWW/login/login.html" id="loginButton">Zaloguj się</a>
+            <a href="/WWW/order/order.html">Zamówienie</a>
         </div>
     </div>
 
@@ -29,16 +31,21 @@
             <h1 id="order-header">Twoje Zamówienie</h1>
             <div class="order-list" id="order-list">
             </div>
-            <button class="order-button" id="finish" onclick="orderRedirect();">Kontynuuj zamówienie</button>   
+            <div class="sum" id="sum">
+                <p>Łącznie</p>
+                <p id="price">0 zł</p>
+            </div>
+            <button class="order-button" id="finish" onclick="orderRedirect();">Kontynuuj zamówienie</button>
         </div>
     </div>
-   
-    
+
+
     <script src="/JavaScript/cart.js"> </script>
     <script src="/JavaScript/get_menu.js"> </script>
     <script src="/JavaScript/check_session.js"> </script>
     <script>
-        function orderRedirect() { window.location.replace("http://jakubplewa.pl/order/order.html")};
+        function orderRedirect() { window.location.replace("http://jakubplewa.pl/order/order.html") };
     </script>
 </body>
+
 </html>

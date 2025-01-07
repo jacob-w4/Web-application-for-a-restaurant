@@ -4,7 +4,10 @@ function display_cart() {
     const orderContainer = document.getElementById("order-list"); // Kontener na dane menu
     orderContainer.innerHTML = ""; // Wyczyść obecny koszyk
 
-    cart.forEach(cartItem =>{
+
+    let total_price = 0;
+
+    cart.forEach(cartItem => {
         const orderItem = document.createElement("div");
         orderItem.className = "order-item";
 
@@ -17,21 +20,21 @@ function display_cart() {
 
         const priceContainer = document.createElement("p");
         priceContainer.className = "order-price";
-        priceContainer.textContent =  `${cartItem.price} zł`;
-        
+        priceContainer.textContent = `${cartItem.price * cartItem.quantity} zł`;
+
         const quantityContainer = document.createElement("p");
         quantityContainer.className = "order-price";
-        quantityContainer.textContent =  `${cartItem.quantity} szt.`;
+        quantityContainer.textContent = `${cartItem.quantity} szt.`;
 
         const addButton = document.createElement("button");
         addButton.textContent = '+';
-        addButton.onclick = function () { 
+        addButton.onclick = function () {
             cart_add(cartItem.name)
         }
 
         const subButton = document.createElement("button");
         subButton.textContent = '-';
-        subButton.onclick = function () { 
+        subButton.onclick = function () {
             cart_substract(cartItem.name)
         }
 
@@ -47,7 +50,16 @@ function display_cart() {
         orderItem.appendChild(rightSection)
 
         orderContainer.appendChild(orderItem)
+
+        document.getElementById("sum").style.display = "flex"
+        total_price = total_price + cartItem.price * cartItem.quantity
+        document.getElementById("price").innerText = `${total_price} zł`
     })
+    if (cart.length === 0) {
+        document.getElementById("sum").style.display = "none"
+    }
+
+
 }
 
 function cart_add(item, price) {
@@ -57,7 +69,7 @@ function cart_add(item, price) {
     if (cart.length >= 7) {
         return;
     }
-    
+
     const existingItem = cart.find(cartItem => cartItem.name === item);
     if (existingItem) {
         existingItem.quantity += 1; // Zwiększ ilość

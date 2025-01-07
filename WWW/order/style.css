@@ -216,3 +216,11 @@ input {
 .status {
   font-size: 40px;
 }
+
+.sum {
+  display: none;
+  margin-bottom: 1%;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}

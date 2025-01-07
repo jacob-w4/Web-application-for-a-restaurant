@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="topnav">
         <div class="topnav-left">
@@ -27,6 +29,10 @@
             <h1 id="order-header">Twoje Zamówienie</h1>
             <div class="order-list" id="order-list">
             </div>
+            <div class="sum" id="sum">
+                <p>Łącznie</p>
+                <p id="price">0 zł</p>
+            </div>
             <button class="order-button" id="finish" onclick="orderRedirect();">Przejdź dalej</button>
         </div>
         <div class="cart" id="address">
@@ -37,7 +43,7 @@
             </div>
             <div class="item">
                 <p class="address-item">Ulica</p>
-                <input type="text" class="text"  id="street"></input>
+                <input type="text" class="text" id="street"></input>
             </div>
             <div class="item">
                 <p class="address-item">Numer domu</p>
@@ -51,22 +57,23 @@
                 <button class="button" onclick="make_order();">Złóż Zamówienie</button>
                 <button class="button" onclick="orderRedirectBack();">Powrót</button>
             </div>
-        </div>   
+        </div>
     </div>
 
     <script src="/WWW/JavaScript/cart.js"> </script>
     <script src="/WWW/JavaScript/make_order.js"> </script>
     <script src="/WWW/JavaScript/check_session.js"> </script>
     <script>
-        function orderRedirect() { 
-                document.getElementById("cart").style.display = 'none';
-                document.getElementById("address").style.display = 'flex';
-                get_user_data()
-            }
-        function orderRedirectBack() { 
+        function orderRedirect() {
+            document.getElementById("cart").style.display = 'none';
+            document.getElementById("address").style.display = 'flex';
+            get_user_data()
+        }
+        function orderRedirectBack() {
             document.getElementById("address").style.display = 'none';
             document.getElementById("cart").style.display = 'flex';
         }
     </script>
 </body>
+
 </html>

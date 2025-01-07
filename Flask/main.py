@@ -18,7 +18,6 @@ app.config['SESSION_COOKIE_SECURE'] = True # Wymagane dla SameSite=None
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 local_url = "http://127.0.0.1:2501/WWW/"
-#local_url = "http://jakubplewa.pl:80/"
 
 
 @app.route("/login", methods=["POST"])
@@ -34,14 +33,11 @@ def login():
         user = database.get_user(username, password)
        
         if user is None:
-            print("404: Uzytkownik nie istnieje")
             return redirect(location=f"{local_url}login/login.html")
         elif username == 'admin':
-            print("200: Pomyslnie zalogowano")
             session['username'] = username
             return redirect(location=f"{local_url}admin/users/users.html")
         else:
-            print("200: Pomyslnie zalogowano")
             session.permanent = True
             session['username'] = username # zapisanie w sesji
             return redirect(location=f"{local_url}home/home.html")
@@ -68,15 +64,19 @@ def register():
     phone = data.get('phone')
     email = data.get('email')
 
-    if database.check_username(username) != None:
-        return jsonify({'status': 'failed',
+    if username != "" and password != "" and password_check != "" and phone != "" and email != "":
+        if database.check_username(username) != None:
+            return jsonify({'status': 'failed',
                         'details': 'Konto o podanej nazwie już istnieje'})
-    elif password != password_check:
-         return jsonify({'status': 'failed',
+        elif password != password_check:
+            return jsonify({'status': 'failed',
                         'details': 'Podane hasła nie zgadzaja się'})
-    elif database.create_user(username, password, email, phone) == 'success':
-        return jsonify({'status': 'success',
+        elif database.create_user(username, password, email, phone) == 'success':
+            return jsonify({'status': 'success',
                         'details': 'Pomyślnie stworzono konto'})
+    else:
+        return jsonify({'status': 'failed',
+                        'details': 'Wypełnij wszystkie pola'})
 
 @app.route('/session', methods=['GET'])
 def check_session():
@@ -160,11 +160,14 @@ def make_order():
     apartment_num = data.get('apartment_num')
     phone = data.get('phone')
 
-    if 'username' in session:
-        status = database.make_order(session['username'], data['items'], city, street, apartment_num, phone)
+    if city != "" and street != "" and apartment_num != "" and phone != "":
+        if 'username' in session:
+            status = database.make_order(session['username'], data['items'], city, street, apartment_num, phone)
+        else:
+            status = database.make_order(None, data['items'], city, street, apartment_num, phone)
+        return jsonify({'status' : status})
     else:
-        status = database.make_order(None, data['items'], city, street, apartment_num, phone)
-    return jsonify({'status' : status})
+        return jsonify({'status' : 'Wypełnij wszystkie pola'})
 
 @app.route('/order', methods=['PUT'])
 def change_order_status():

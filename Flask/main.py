@@ -154,11 +154,14 @@ def make_order():
     apartment_num = data.get('apartment_num')
     phone = data.get('phone')
 
-    if 'username' in session:
-        status = database.make_order(session['username'], data['items'], city, street, apartment_num, phone)
+    if city != "" and street != "" and apartment_num != "" and phone != "":
+        if 'username' in session:
+            status = database.make_order(session['username'], data['items'], city, street, apartment_num, phone)
+        else:
+            status = database.make_order(None, data['items'], city, street, apartment_num, phone)
+        return jsonify({'status' : status})
     else:
-        status = database.make_order(None, data['items'], city, street, apartment_num, phone)
-    return jsonify({'status' : status})
+        return jsonify({'status' : 'Wypełnij wszystkie pola'})
 
 @app.route('/api/order', methods=['PUT'])
 def change_order_status():

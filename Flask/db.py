@@ -6,8 +6,8 @@ import json
 def connect():
     database = mysql.connector.connect(
         host="jakubplewa.pl",
-        user="jakub",
-        password="jakub",
+        user="adam",
+        password="adam",
         port=3606
     )
     return database
@@ -104,69 +104,78 @@ def create_user(username, password, email, phone):
     return 'success'
 
 def make_order(username, items, city, street, apartment_num, phone):
-    if username == None:
-        username = create_guest(city, street, apartment_num, phone)
-        if username == None:
-            return 'failed'
-
     database = connect()
     cursor = database.cursor()
 
-    query = "UPDATE `lokal-kebab`.Users SET city=%s, street=%s, apartment_num=%s, phone=%s WHERE username=%s"
-    cursor.execute(query, (city, street, apartment_num, phone, username))
+    try:
+        if username == None:
+            username = create_guest(city, street, apartment_num, phone, cursor, database)
+            if username == None:
+                cursor.close()
+                database.close()
+                return 'failed'
 
-    query = "SELECT menu_id FROM `lokal-kebab`.Menu WHERE name = %s"
-    menu_ids = []
-    quantity = []
+        query = "UPDATE `lokal-kebab`.Users SET city=%s, street=%s, apartment_num=%s, phone=%s WHERE username=%s"
+        cursor.execute(query, (city, street, apartment_num, phone, username))
+    
+        query = "SELECT menu_id FROM `lokal-kebab`.Menu WHERE name = %s"
+        menu_ids = []
+        quantity = []
 
-    for item in items:
-        cursor.execute(query, (item["name"],))
-        result = cursor.fetchone()  # Pobiera jeden wynik
-        if result:  # Sprawdza, czy wynik istnieje
-            menu_ids.append(result[0])  # Dodaje menu_id (pierwsza kolumna w wyniku zapytania)
-            quantity.append(item["quantity"]) # dodaje ilość
+        for item in items:
+            cursor.execute(query, (item["name"],))
+            result = cursor.fetchone()  # Pobiera jeden wynik
+            if result:  # Sprawdza, czy wynik istnieje
+                menu_ids.append(result[0])  # Dodaje menu_id (pierwsza kolumna w wyniku zapytania)
+                quantity.append(item["quantity"]) # dodaje ilość
 
-    query = "SELECT user_id FROM `lokal-kebab`.Users WHERE username = %s"
-    cursor.execute(query, (username,)) 
-    user_id = cursor.fetchone()[0]
+        query = "SELECT user_id FROM `lokal-kebab`.Users WHERE username = %s"
+        cursor.execute(query, (username,)) 
+        user_id = cursor.fetchone()[0]
 
-    start_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    status = "W trakcie"
+        start_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        status = "W trakcie"
 
-    query = "INSERT INTO `lokal-kebab`.Orders (status, Users_user_id, startDate) VALUES (%s, %s, %s)"
-    cursor.execute(query, (status, user_id, start_date)) 
-    order_id = cursor.lastrowid
+        query = "INSERT INTO `lokal-kebab`.Orders (status, Users_user_id, startDate) VALUES (%s, %s, %s)"
+        cursor.execute(query, (status, user_id, start_date)) 
+        order_id = cursor.lastrowid
 
-    query = "INSERT INTO `lokal-kebab`.Order_menu (order_id, menu_id, quantity) VALUES (%s, %s, %s)"
-    for i in range(len(menu_ids)):
-        cursor.execute(query, (order_id, menu_ids[i], quantity[i])) 
+        query = "INSERT INTO `lokal-kebab`.Order_menu (order_id, menu_id, quantity) VALUES (%s, %s, %s)"
+        for i in range(len(menu_ids)):
+            cursor.execute(query, (order_id, menu_ids[i], quantity[i])) 
+        
 
-    database.commit()
+        cursor.execute("USE `lokal-kebab`")
+        query = "SELECT is_temp FROM `lokal-kebab`.Users WHERE user_id = %s"
+        cursor.execute(query, (user_id,))
+        temp = cursor.fetchone()[0]
 
-    cursor.close()
-    database.close()
+        if temp == 'NO':
+            add_to_order_history(user_id, start_date, database, cursor)
 
-    return 'success'
+        database.commit()
+        return 'success'
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        database.rollback()
+        return 'failed'
+    finally:
+        cursor.close()
+        database.close()
 
-def create_guest(city, street, apartment_num, phone):
+def create_guest(city, street, apartment_num, phone, cursor, database):
     try:
         start_date = datetime.now().strftime('%d%m%Y%H%M%S')
         username = "guest" + start_date
     
-        database = connect()
-        cursor = database.cursor()
-
         query = "INSERT INTO `lokal-kebab`.Users (username, city, street, apartment_num, phone, is_temp) VALUES (%s, %s, %s, %s, %s, 'YES')"
         cursor.execute(query, (username, city, street, apartment_num, phone))
-
-        database.commit()
-
-        cursor.close()
-        database.close()
 
         return username
     except:
         print("Cannot create a guest account")
+        database.rollback()
         return None
     
 def get_users_data():
@@ -192,8 +201,12 @@ def delete_user_from_db(username):
 
     user_id = cursor.fetchone()[0]
     
-    query = "DELETE FROM `lokal-kebab`.Orders WHERE user_id = %s"
+    query = "DELETE FROM `lokal-kebab`.Orders WHERE Users_user_id = %s"
     cursor.execute(query, (user_id,))
+
+    query = "DELETE FROM `lokal-kebab`.Order_history WHERE user_id = %s"
+    cursor.execute(query, (user_id,))
+
     query = "DELETE FROM `lokal-kebab`.Users WHERE user_id = %s"
     cursor.execute(query, (user_id,))
 
@@ -310,27 +323,26 @@ def change_status(status, order_id):
     cursor.execute(query, (status, end_date, order_id))
     database.commit()
 
-    if check_temp(order_id) == 'YES':
-        delete_temp(order_id)
-
-    cursor.close()
-    database.close()
-
-def check_temp(order_id):
-    database = connect()
-    cursor = database.cursor()  
-    cursor.execute("USE `lokal-kebab`")
-
-    query = "SELECT u.is_temp FROM Orders o JOIN Users u ON o.Users_user_id = u.user_id WHERE o.order_id  = %s"
+    query = "SELECT startDate FROM `lokal-kebab`.Orders WHERE order_id = %s"
     cursor.execute(query, (order_id,))
-    temp = cursor.fetchone()[0]
+    start_date = cursor.fetchone()[0]
+    start_date = str(start_date)
+
+    query = "SELECT Users_user_id FROM `lokal-kebab`.Orders WHERE order_id = %s"
+    cursor.execute(query, (order_id,))
+    user_id = cursor.fetchone()[0]
+
+    query = "UPDATE `lokal-kebab`.Order_history SET status = %s, endDate = %s WHERE user_id = %s AND startDate = %s"
+    cursor.execute(query, (status, end_date, user_id, start_date))
+    database.commit()
+    
+    delete_current_order(order_id)
+
 
     cursor.close()
     database.close()
 
-    return temp
-
-def delete_temp(order_id):
+def delete_current_order(order_id):
     database = connect()
     cursor = database.cursor() 
     cursor.execute("USE `lokal-kebab`") 
@@ -342,12 +354,17 @@ def delete_temp(order_id):
     # Usuwa z tablicy Orders
     query = "DELETE FROM Orders WHERE order_id = %s"
     cursor.execute(query, (order_id,))
-
-    # Usuwa z tablicy Users
-    query = "DELETE FROM Users WHERE user_id = %s"
-    cursor.execute(query, (user_id,))
-
     database.commit()
+
+    query = "SELECT is_temp FROM Users WHERE user_id  = %s"
+    cursor.execute(query, (user_id,))
+    temp = cursor.fetchone()[0]
+
+    if temp == 'YES':
+        query = "DELETE FROM Users WHERE user_id = %s"
+        cursor.execute(query, (user_id,))
+        database.commit()
+   
 
     cursor.close()
     database.close()
@@ -357,15 +374,7 @@ def get_order_history(username):
     cursor = database.cursor(dictionary=True) 
     cursor.execute("USE `lokal-kebab`") 
 
-    query = """SELECT o.status, o.startDate, o.endDate, GROUP_CONCAT(om.quantity, 'x ', m.name) AS items, SUM(m.price * om.quantity) AS total_price
-            FROM Orders o
-            JOIN Users u ON o.Users_user_id = u.user_id
-            JOIN Order_menu om ON o.order_id = om.order_id
-            JOIN Menu m ON om.menu_id = m.menu_id
-            WHERE username = %s
-            GROUP BY o.status, o.startDate, o.endDate, u.username
-            ORDER BY o.startDate DESC;"""
-    
+    query = "SELECT * FROM Order_history WHERE user_id=(SELECT user_id FROM Users WHERE username=%s)"
     cursor.execute(query, (username,))
     data = cursor.fetchall()
 
@@ -390,3 +399,31 @@ def get_order_history(username):
     database.close()
 
     return data
+
+def add_to_order_history(user_id, start_date, database, cursor):
+    try:
+        cursor.execute("USE `lokal-kebab`")
+        query = """SELECT GROUP_CONCAT(om.quantity, 'x ', m.name) AS items
+                FROM Orders o
+                JOIN Users u ON o.Users_user_id = u.user_id
+                JOIN Order_menu om ON o.order_id = om.order_id
+                JOIN Menu m ON om.menu_id = m.menu_id
+                WHERE u.user_id = %s AND o.startDate = %s;"""
+        cursor.execute(query, (user_id, start_date))
+        items = cursor.fetchone()[0]
+
+        query = """SELECT SUM(m.price * om.quantity) AS total_price
+                FROM Orders o
+                JOIN Users u ON o.Users_user_id = u.user_id
+                JOIN Order_menu om ON o.order_id = om.order_id
+                JOIN Menu m ON om.menu_id = m.menu_id
+                WHERE u.user_id = %s AND o.startDate = %s;"""
+        cursor.execute(query, (user_id, start_date))
+        total_price = cursor.fetchone()[0]
+
+        status = "W trakcie"
+        query = "INSERT INTO `lokal-kebab`.Order_history (total_price, startDate, user_id, items, status) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(query, (total_price,start_date, user_id, items, status))
+    except Exception as e:
+        print(f"Error while adding to order history: {e}")
+        database.rollback()

@@ -6,16 +6,16 @@
   align-items: center;
   border-bottom: 2px solid black;
   height: 75px;
-  padding: 0 1rem;  
+  padding: 0 1rem;
 }
 
 body {
- margin: 0 auto;
+  margin: 0 auto;
 
- margin: 0 auto;
- display: flex;
- flex-direction: column;
- min-height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .topnav a {
@@ -91,7 +91,7 @@ h1 {
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  border:rgb(245, 202, 122) solid;
+  border: rgb(245, 202, 122) solid;
 }
 
 .center {
@@ -100,12 +100,12 @@ h1 {
 }
 
 .cart {
-  display: flex; 
+  display: flex;
   flex-direction: column;
   position: relative;
 
   align-items: center;
-  background-color:blanchedalmond;
+  background-color: blanchedalmond;
   flex-grow: 1;
   margin: 30px;
   padding: 2vw;
@@ -136,7 +136,9 @@ h1 {
   font-weight: bolder;
 }
 
-button:hover {background-color: #ca8a13;}
+button:hover {
+  background-color: #ca8a13;
+}
 
 button:active {
   background-color: #ca8a13;
@@ -170,7 +172,7 @@ button:active {
 
   flex-direction: column;
 
-  align-items: center; 
+  align-items: center;
   position: relative;
 }
 
@@ -215,4 +217,12 @@ input {
 
 .status {
   font-size: 40px;
+}
+
+.sum {
+  display: none;
+  margin-bottom: 1%;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }

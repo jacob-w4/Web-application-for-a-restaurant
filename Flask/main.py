@@ -58,15 +58,19 @@ def register():
     phone = data.get('phone')
     email = data.get('email')
 
-    if database.check_username(username) != None:
-        return jsonify({'status': 'failed',
+    if username != "" and password != "" and password_check != "" and phone != "" and email != "":
+        if database.check_username(username) != None:
+            return jsonify({'status': 'failed',
                         'details': 'Konto o podanej nazwie już istnieje'})
-    elif password != password_check:
-         return jsonify({'status': 'failed',
+        elif password != password_check:
+            return jsonify({'status': 'failed',
                         'details': 'Podane hasła nie zgadzaja się'})
-    elif database.create_user(username, password, email, phone) == 'success':
-        return jsonify({'status': 'success',
+        elif database.create_user(username, password, email, phone) == 'success':
+            return jsonify({'status': 'success',
                         'details': 'Pomyślnie stworzono konto'})
+    else:
+        return jsonify({'status': 'failed',
+                        'details': 'Wypełnij wszystkie pola'})
 
 @app.route('/api/session', methods=['GET'])
 def check_session():

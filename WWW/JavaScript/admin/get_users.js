@@ -106,6 +106,12 @@ function delete_account(username) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data_to_send),
+    })
+    .then(response => response.json()) 
+    .then(data => {
+        if (data.status = 'success') {
+            window.location.reload();
+        }
     });
 }
 

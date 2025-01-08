@@ -53,5 +53,4 @@ function get_menu() {
 
 
 
-// Uruchamiamy funkcję po załadowaniu strony
 get_menu();

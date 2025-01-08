@@ -47,6 +47,12 @@ function cancel(order_id) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
+    })
+    .then(response => response.json()) 
+    .then(data => {
+        if (data.status = 'success') {
+            window.location.reload();
+        }
     });
 }
 
@@ -63,5 +69,11 @@ function finish(order_id) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
+    })
+    .then(response => response.json()) 
+    .then(data => {
+        if (data.status = 'success') {
+            window.location.reload();
+        }
     });
 }

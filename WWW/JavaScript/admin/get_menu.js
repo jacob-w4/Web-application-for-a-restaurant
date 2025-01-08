@@ -6,7 +6,6 @@ function get_menu() {
     });
 }
 
-
 function display_menu(data) {
     const container = document.getElementById("container"); // Kontener na dane menu
     container.innerHTML = ""; // Czyścimy kontener przed dodaniem nowych danych
@@ -57,7 +56,7 @@ function display_menu(data) {
         })
 
         
-            // Przycisk usunięcia konta
+            // Przycisk usunięcia
             const deleteButton = document.createElement('button');
             deleteButton.className = 'delete'
             deleteButton.type = 'button'
@@ -72,7 +71,6 @@ function display_menu(data) {
 }
 
 get_menu();
-
 
 function change_data(elementID, dataID, name) {
 
@@ -92,7 +90,6 @@ function change_data(elementID, dataID, name) {
         body: JSON.stringify(data_to_send),
     });
 }
-
 
 function search_menu() {
     const menu = document.getElementById('search-input').value
@@ -130,8 +127,13 @@ function delete_menu(name) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data_to_send),
+    })
+    .then(response => response.json()) 
+    .then(data => {
+        if (data.status = 'success') {
+            window.location.reload();
+        }
     });
-    location.reload()
 }
 
 function add_menu() {
@@ -155,5 +157,11 @@ function add_menu() {
         },
         body: JSON.stringify(data_to_send),
     })
+    .then(response => response.json()) 
+    .then(data => {
+        if (data.status = 'success') {
+            window.location.reload();
+        }
+    });
 
 }

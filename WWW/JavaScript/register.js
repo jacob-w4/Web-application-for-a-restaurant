@@ -22,19 +22,21 @@ function register() {
     })
     .then(response => response.json()) // Dekodowanie JSON z odpowiedzi
     .then(result => {
-
+        // Jeśli konto o podanej nazwie już istnieje - błąd
         if (result.status === 'failed' && result.details === 'Konto o podanej nazwie już istnieje') {
 
             console.log(result)
             document.getElementById('status').innerText = `Błąd: ${result.details}`;
 
         }
+        // Jeśli podane hasła nie zgadzaja się - błąd
         if (result.status === 'failed' && result.details === 'Podane hasła nie zgadzaja się') {
 
             console.log(result)
             document.getElementById('status').innerText = `Błąd: ${result.details}`;
 
         }
+        // Jeśli pola nie są wypełnione - błąd
         if (result.status === 'failed' && result.details === 'Wypełnij wszystkie pola') {
 
             console.log(result)

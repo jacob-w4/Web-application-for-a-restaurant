@@ -28,7 +28,7 @@ function change_data(dataID, username) {
         value : data
     };
 
-    fetch("api/user", {
+    fetch("http://jakubplewa.pl/api/user", {
         method: "PUT", 
         credentials: 'include', 
         headers: {

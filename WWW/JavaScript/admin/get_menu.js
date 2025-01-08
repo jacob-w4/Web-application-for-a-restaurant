@@ -57,7 +57,7 @@ function display_menu(data) {
         })
 
         
-            // Przycisk usunięcia konta
+            // Przycisk usunięcia
             const deleteButton = document.createElement('button');
             deleteButton.className = 'delete'
             deleteButton.type = 'button'
@@ -130,8 +130,13 @@ function delete_menu(name) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data_to_send),
+    })
+    .then(response => response.json()) 
+    .then(data => {
+        if (data.status = 'success') {
+            window.location.reload();
+        }
     });
-    location.reload()
 }
 
 function add_menu() {
@@ -155,5 +160,11 @@ function add_menu() {
         },
         body: JSON.stringify(data_to_send),
     })
+    .then(response => response.json()) 
+    .then(data => {
+        if (data.status = 'success') {
+            window.location.reload();
+        }
+    });
 
 }

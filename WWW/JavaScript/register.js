@@ -45,7 +45,7 @@ function register() {
         }
         if (result.status === 'success') {
             console.log(result)
-            window.location = "http://127.0.0.1:2501/WWW/login/login.html";
+            window.location = "http://jakubplewa.pl/login/login.html";
         }
     })
     .catch(error => {
